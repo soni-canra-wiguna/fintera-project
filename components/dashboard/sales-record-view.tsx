@@ -1,7 +1,6 @@
 "use client"
 
-import { ShoppingBagIcon } from "lucide-react"
-import { Minus, LayoutGrid, Columns2, AlignJustify, Trash } from "lucide-react"
+import { ShoppingBagIcon, Minus, LayoutGrid, Columns2, AlignJustify, Trash } from "lucide-react"
 import { Button } from "../ui/button"
 import { Card } from "../ui/card"
 import {
@@ -38,6 +37,7 @@ import { useAuth } from "@clerk/nextjs"
 import { CreateSalesRecordRequest } from "@/types/sales-record"
 import { DeleteModal } from "../delete-modal"
 import { TokenProps } from "@/types"
+import { DiscountProduct } from "./discount-product"
 
 interface LayoutSwitcherProps {
   disabledButton: boolean
@@ -183,12 +183,17 @@ const CardDrawer: React.FC<{ product: ProductSliceType }> = ({ product }) => {
         <div className="aspect-square h-20 overflow-hidden rounded-xl">
           <img alt="image" src={product.image} className="size-full object-cover" />
         </div>
-        <div className="">
+        <div className="space-y-1">
           <h4 className="text-sm font-semibold capitalize">{product.title}</h4>
-          <p className="text-xs font-medium">{formatToIDR(product.unitPrice)}</p>
+          <p className="flex items-center gap-2 text-xs font-medium">
+            {formatToIDR(product.unitPrice)}
+            <span className="text-xs text-main">x {product.quantity}</span>
+          </p>
           <p className="text-xs">
             stock: {product.stock} {product.unit}
           </p>
+          {/* <DiscountProduct id={product.id} price={product.price} /> */}
+          <p className="text-xs font-medium">Total Harga: {formatToIDR(product.price)}</p>
         </div>
       </div>
       <div className="flex h-full flex-col justify-between gap-2">
