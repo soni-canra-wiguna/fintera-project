@@ -14,7 +14,7 @@ import { useQuery } from "@tanstack/react-query"
 import { salesRecordsServices } from "@/services/sales-records.services"
 import { WithTokenAndUserId } from "@/types"
 
-const Amount: React.FC<WithTokenAndUserId> = ({ token, userId }) => {
+const SummaryOfTotalRevenue: React.FC<WithTokenAndUserId> = ({ token, userId }) => {
   const [from] = useQueryState("from", {
     defaultValue: format(new Date(), "yyyy-MM-dd"),
   })
@@ -29,12 +29,13 @@ const Amount: React.FC<WithTokenAndUserId> = ({ token, userId }) => {
 
   const statistic = data?.statistic
 
-  if (isPending) return <LoadingAmount />
+  if (isPending) return <LoadingSummaryOfTotalRevenue />
 
   if (!statistic || data?.data.length <= 0)
-    return <ErrorAmount title="Belum ada yang terjual nih" />
+    return <ErrorSummaryOfTotalRevenue title="Belum ada yang terjual nih" />
 
-  if (isError) return <ErrorAmount title="Internet kamu lemot, coba deh refresh lagi" />
+  if (isError)
+    return <ErrorSummaryOfTotalRevenue title="Internet kamu lemot, coba deh refresh lagi" />
 
   return (
     <div className="space-y-2">
@@ -66,14 +67,14 @@ const Amount: React.FC<WithTokenAndUserId> = ({ token, userId }) => {
           </span>
         </Card>
       </div>
-      <AmountByCategory categories={statistic?.salesAndRevenueByCategory} />
+      <SummaryOfTotalRevenueByCategory categories={statistic?.salesAndRevenueByCategory} />
     </div>
   )
 }
 
-export default Amount
+export default SummaryOfTotalRevenue
 
-export const LoadingAmount = () => {
+export const LoadingSummaryOfTotalRevenue = () => {
   return (
     <section className="space-y-2">
       <div className="grid grid-cols-2 gap-2">
@@ -118,7 +119,7 @@ export const LoadingAmount = () => {
   )
 }
 
-const ErrorAmount: React.FC<{ title: string }> = ({ title }) => {
+const ErrorSummaryOfTotalRevenue: React.FC<{ title: string }> = ({ title }) => {
   return (
     <Card className="gradientCard flex h-40 items-center justify-center rounded-xl p-4">
       <p className="text-sm text-muted-foreground">{title}</p>
@@ -126,7 +127,7 @@ const ErrorAmount: React.FC<{ title: string }> = ({ title }) => {
   )
 }
 
-export const AmountByCategory: React.FC<{
+export const SummaryOfTotalRevenueByCategory: React.FC<{
   categories: SalesAndRevenueByCategoryResponse[] | undefined
 }> = ({ categories }) => {
   const [api, setApi] = useState<CarouselApi>()

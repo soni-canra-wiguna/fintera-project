@@ -1,6 +1,8 @@
 import React, { Suspense } from "react"
 import { FilterButton, FilterStatistic } from "@/components/dashboard/statistic/filter"
-import Amount, { LoadingAmount } from "@/components/dashboard/statistic/amount"
+import SummaryOfTotalRevenue, {
+  LoadingSummaryOfTotalRevenue,
+} from "@/components/dashboard/statistic/summary-of-total-revenue"
 import { Wrapper } from "@/components/layout/wrapper"
 import TableRecords from "@/components/dashboard/statistic/table-records"
 import { SectionHeader, SectionContent } from "@/components/section"
@@ -23,8 +25,8 @@ const StatisticsPage = async () => {
       <Wrapper className="py-20">
         <SectionContent>
           <SectionHeader actionButton={actionButtonStatistic}>statistik penjualan</SectionHeader>
-          <Suspense fallback={<LoadingAmount />}>
-            <Amount token={token ?? ""} userId={userId ?? ""} />
+          <Suspense fallback={<LoadingSummaryOfTotalRevenue />}>
+            <SummaryOfTotalRevenue token={token ?? ""} userId={userId ?? ""} />
           </Suspense>
         </SectionContent>
         <SectionContent>
