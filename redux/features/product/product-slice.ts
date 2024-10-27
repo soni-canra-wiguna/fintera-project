@@ -9,12 +9,14 @@ export type ProductSliceType = Omit<CreateProductRequest, "description"> & {
   unitPrice: number
 }
 
-const products =
-  typeof window !== "undefined" ? localStorage.getItem("products") : "[]"
+export type DiscountType = Pick<ProductSliceType, "id"> & {
+  discount: number
+}
+
+const products = typeof window !== "undefined" ? localStorage.getItem("products") : "[]"
 
 const initialState = {
-  products:
-    (JSON.parse(products!) as ProductSliceType[]) || ([] as ProductSliceType[]),
+  products: (JSON.parse(products!) as ProductSliceType[]) || ([] as ProductSliceType[]),
 }
 
 export const productSlice = createSlice({
@@ -25,9 +27,7 @@ export const productSlice = createSlice({
       state.products.push(action.payload)
     },
     incermentProduct: (state, action: PayloadAction<ProductSliceType>) => {
-      const product = state.products.find(
-        (product) => product.id === action.payload.id,
-      )
+      const product = state.products.find((product) => product.id === action.payload.id)
       if (!product) {
         state.products.push(action.payload)
         localStorage.setItem("products", JSON.stringify(state.products))
@@ -38,9 +38,7 @@ export const productSlice = createSlice({
       }
     },
     decrementProduct: (state, action: PayloadAction<ProductSliceType>) => {
-      const product = state.products.find(
-        (product) => product.id === action.payload.id,
-      )
+      const product = state.products.find((product) => product.id === action.payload.id)
       if (product && product.quantity > 1) {
         product.quantity -= 1
         product.price = product.unitPrice * product.quantity
@@ -52,13 +50,18 @@ export const productSlice = createSlice({
       }
     },
     removeProduct: (state, action: PayloadAction<string>) => {
-      state.products = state.products.filter(
-        (product) => product.id !== action.payload,
-      )
+      state.products = state.products.filter((product) => product.id !== action.payload)
       localStorage.setItem("products", JSON.stringify(state.products))
     },
     resetProduct: (state) => {
       state.products = []
+      localStorage.setItem("products", JSON.stringify(state.products))
+    },
+    discountProduct: (state, action: PayloadAction<DiscountType>) => {
+      const product = state.products.find((product) => product.id === action.payload.id)
+      if (product) {
+        product.price -= action.payload.discount
+      }
       localStorage.setItem("products", JSON.stringify(state.products))
     },
   },
@@ -70,5 +73,6 @@ export const {
   decrementProduct,
   removeProduct,
   resetProduct,
+  discountProduct,
 } = productSlice.actions
 export default productSlice.reducer
