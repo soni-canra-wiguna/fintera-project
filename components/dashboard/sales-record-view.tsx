@@ -192,7 +192,7 @@ const CardDrawer: React.FC<{ product: ProductSliceType }> = ({ product }) => {
           <p className="text-xs">
             stock: {product.stock} {product.unit}
           </p>
-          <DiscountProduct id={product.id} price={product.price} />
+          {/* <DiscountProduct id={product.id} price={product.price} /> */}
           <p className="text-xs font-medium">Total Harga: {formatToIDR(product.price)}</p>
         </div>
       </div>
