@@ -17,7 +17,7 @@ import { Product } from "@prisma/client"
 import { useAuth } from "@clerk/nextjs"
 import { Loader2, SearchIcon, XIcon, ArrowUpFromLine, ChevronDown } from "lucide-react"
 import { ProductCard } from "./product-card"
-import { Wrapper } from "@/components/layout/wrapper"
+import { Container } from "@/components/layout/container"
 import { TokenProps } from "@/types"
 import { searchProductsServices } from "@/services/product.services"
 import { SearchByType } from "@/app/api/products/search/route"
@@ -102,7 +102,7 @@ export const SearchBar: React.FC<TokenProps> = ({ token }) => {
           <SheetTitle>cari produk</SheetTitle>
           <SheetDescription>cari produk yang kamu suka</SheetDescription>
         </SheetHeader>
-        <Wrapper className="flex w-full flex-col gap-6">
+        <Container className="flex w-full flex-col gap-6">
           <div className="flex w-full flex-row-reverse items-center">
             <div className="relative h-max w-full">
               <Input
@@ -136,7 +136,7 @@ export const SearchBar: React.FC<TokenProps> = ({ token }) => {
               ))}
             </div>
           )}
-        </Wrapper>
+        </Container>
         <Button
           onClick={() => setIsOpen(!isOpen)}
           variant="link"

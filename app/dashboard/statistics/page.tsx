@@ -1,12 +1,12 @@
 import React, { Suspense } from "react"
-import { FilterButton, FilterStatistic } from "@/components/dashboard/statistic/filter"
+import { FilterButton, FilterStatistic } from "@/components/pages/dashboard/statistic/filter"
 import SummaryOfTotalRevenue, {
   LoadingSummaryOfTotalRevenue,
-} from "@/components/dashboard/statistic/summary-of-total-revenue"
-import { Wrapper } from "@/components/layout/wrapper"
-import TableRecords from "@/components/dashboard/statistic/table-records"
+} from "@/components/pages/dashboard/statistic/summary-of-total-revenue"
+import { Container } from "@/components/layout/container"
+import TableRecords from "@/components/pages/dashboard/statistic/table-records"
 import { SectionHeader, SectionContent } from "@/components/section"
-import { DownloadTransactionHistory } from "@/components/dashboard/statistic/download-transaction-history"
+import { DownloadTransactionHistory } from "@/components/pages/dashboard/statistic/download-transaction-history"
 import { MainContainer } from "@/components/layout/main-container"
 import { auth } from "@clerk/nextjs/server"
 
@@ -22,7 +22,7 @@ const StatisticsPage = async () => {
 
   return (
     <MainContainer>
-      <Wrapper className="py-20">
+      <Container className="py-20">
         <SectionContent>
           <SectionHeader actionButton={actionButtonStatistic}>statistik penjualan</SectionHeader>
           <Suspense fallback={<LoadingSummaryOfTotalRevenue />}>
@@ -35,7 +35,7 @@ const StatisticsPage = async () => {
           </SectionHeader>
           <TableRecords token={token ?? ""} userId={userId ?? ""} />
         </SectionContent>
-      </Wrapper>
+      </Container>
     </MainContainer>
   )
 }

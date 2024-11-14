@@ -1,20 +1,20 @@
 "use client"
 
-import { formatToIDR } from "@/utils/format-to-idr"
-import { useDispatch } from "react-redux"
-import { Button } from "../ui/button"
-import { incermentProduct } from "@/redux/features/product/product-slice"
-import { toast } from "../ui/use-toast"
-import { Card } from "@/components/ui/card"
-import React, { useState } from "react"
-import { MoreVertical, Plus, Pencil, FileSearch } from "lucide-react"
-import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover"
-import { cn } from "@/lib/utils"
-import { PreviewDetailProduct } from "@/components/dashboard/preview-product"
-import { ResponseDataType } from "@/types/product"
-import { DeleteProduct } from "./delete-product"
 import Link from "next/link"
+import { cn } from "@/lib/utils"
+import React, { useState } from "react"
+import { Card } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { toast } from "@/components/ui/use-toast"
+import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover"
+import { MoreVertical, Plus, Pencil, FileSearch } from "lucide-react"
+import { useDispatch } from "react-redux"
+import { formatToIDR } from "@/utils/format-to-idr"
+import { incermentProduct } from "@/redux/features/product/product-slice"
+import { DeleteProduct } from "./delete-product"
+import { PreviewDetailProduct } from "./preview-product"
 import { TokenProps } from "@/types"
+import { ResponseDataType } from "@/types/product"
 
 interface ProductCardProps extends TokenProps {
   product: ResponseDataType
@@ -103,7 +103,7 @@ const MoreOptions: React.FC<ProductCardProps> = ({ product, userId, token }) => 
           </div>
         </PreviewDetailProduct>
         <Link
-          href={`/dashboard/${product.id}/edit-product`}
+          href={`/dashboard/products/edit/${product.id}`}
           onClick={() => setIsOpen(!isOpen)}
           className={cn(
             "relative flex w-full cursor-pointer items-center gap-3 px-4 py-2 text-sm capitalize hover:bg-secondary",

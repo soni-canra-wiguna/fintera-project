@@ -6,7 +6,7 @@ import { Carousel, CarouselApi, CarouselContent, CarouselItem } from "@/componen
 import React, { useEffect, useState } from "react"
 import Autoplay from "embla-carousel-autoplay"
 import { Separator } from "@/components/ui/separator"
-import { FileUploadCSV } from "../file-upload"
+import { FileUploadCSV } from "@/components/file-upload"
 
 export const UploadProductFile = () => {
   return (

@@ -1,8 +1,7 @@
 import { cn } from "@/lib/utils"
+import { WithDivElement } from "@/types"
 
-type WrapperType = React.HTMLAttributes<HTMLDivElement>
-
-export const Wrapper: React.FC<WrapperType> = ({ children, className, ...props }) => {
+export const Container: React.FC<WithDivElement> = ({ children, className, ...props }) => {
   return (
     <section
       className={cn("mx-auto w-full max-w-md px-4 sm:px-6 md:px-8 lg:px-10", className)}

@@ -1,9 +1,9 @@
-import { FormEditProduct } from "@/components/dashboard/form-edit-product"
-import { Wrapper } from "@/components/layout/wrapper"
-import { auth } from "@clerk/nextjs/server"
-import { MainContainer } from "@/components/layout/main-container"
-import prisma from "@/lib/prisma"
 import React from "react"
+import prisma from "@/lib/prisma"
+import { auth } from "@clerk/nextjs/server"
+import { Container } from "@/components/layout/container"
+import { MainContainer } from "@/components/layout/main-container"
+import { FormEditProduct } from "@/components/pages/dashboard/form-edit-product"
 
 const EditProductPage: React.FC<{ params: { id: string } }> = async ({ params }) => {
   const { userId, getToken } = auth()
@@ -22,9 +22,9 @@ const EditProductPage: React.FC<{ params: { id: string } }> = async ({ params })
 
   return (
     <MainContainer>
-      <Wrapper className="pb-20 pt-16">
+      <Container className="pb-20 pt-16">
         <FormEditProduct product={product} token={token ?? ""} />
-      </Wrapper>
+      </Container>
     </MainContainer>
   )
 }

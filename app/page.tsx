@@ -1,13 +1,11 @@
-import { Button } from "@/components/ui/button"
-import { auth } from "@clerk/nextjs/server"
-import Link from "next/link"
-import { redirect } from "next/navigation"
-import { Wrapper } from "@/components/layout/wrapper"
 import Image from "next/image"
+import { auth } from "@clerk/nextjs/server"
+import { redirect } from "next/navigation"
+import { Container } from "@/components/layout/container"
 import FlickeringGrid from "@/components/ui/flickering-grid"
-import { Github } from "lucide-react"
-import { ThemeSwitcher } from "@/components/theme-switcher"
 import { MainContainer } from "@/components/layout/main-container"
+import { SocialMedia } from "@/components/pages/home/social-media"
+import { AuthButton } from "@/components/pages/home/auth-button"
 
 export default function Home() {
   const { userId } = auth()
@@ -16,7 +14,7 @@ export default function Home() {
 
   return (
     <MainContainer className="h-screen overflow-hidden">
-      <Wrapper className="relative flex h-full flex-col items-center justify-between overflow-hidden pb-8 pt-48">
+      <Container className="relative flex h-full flex-col items-center justify-between overflow-hidden pb-8 pt-48">
         <div className="flex w-full flex-col items-center justify-center">
           <div className="relative mb-6 size-16">
             <Image alt="logo" className="grayscale" src="/notacore.png" fill />
@@ -26,7 +24,7 @@ export default function Home() {
             Catat hasil penjualanmu dan lihatlah hasilnya!
           </p>
         </div>
-        <SignInSignUpButton />
+        <AuthButton />
 
         <SocialMedia />
         <FlickeringGrid
@@ -41,35 +39,7 @@ export default function Home() {
         />
         {/* overlay bottom */}
         <div className="absolute bottom-0 left-0 -z-10 h-[400px] w-full bg-gradient-to-t from-background" />
-      </Wrapper>
+      </Container>
     </MainContainer>
-  )
-}
-
-const SocialMedia = () => {
-  return (
-    <div className="absolute right-8 top-8 flex items-center gap-6">
-      <a className="" href="https://github.com/soni-canra-wiguna" target="_blank">
-        <Github className="size-6" />
-      </a>
-      <ThemeSwitcher sizeIcon="6" className="w-max border-none p-0" />
-    </div>
-  )
-}
-
-const SignInSignUpButton = () => {
-  return (
-    <div className="flex w-full flex-col gap-4">
-      <Link className="w-full" href="/sign-in">
-        <Button size="lg" className="w-full rounded-xl capitalize">
-          Sign In
-        </Button>
-      </Link>
-      <Link className="w-full" href="/sign-up">
-        <Button variant="outline" size="lg" className="w-full rounded-xl capitalize">
-          Daftar
-        </Button>
-      </Link>
-    </div>
   )
 }

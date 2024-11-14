@@ -1,6 +1,6 @@
 "use client"
 
-import { Button } from "../ui/button"
+import { Button } from "@/components/ui/button"
 import {
   Drawer,
   DrawerClose,
@@ -14,7 +14,7 @@ import { X } from "lucide-react"
 import { WithChildren } from "@/types"
 import { ResponseDataType } from "@/types/product"
 import { formatToIDR } from "@/utils/format-to-idr"
-import { Badge } from "../ui/badge"
+import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
 import { Balancer } from "react-wrap-balancer"
 import parse from "html-react-parser"

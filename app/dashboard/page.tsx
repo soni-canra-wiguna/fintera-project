@@ -1,9 +1,9 @@
-import { auth } from "@clerk/nextjs/server"
-import { Wrapper } from "@/components/layout/wrapper"
-import ListsProducts, { LoadingListProducts } from "@/components/dashboard/lists-products"
-import { FallbackFilterButton, FilterProducts } from "@/components/dashboard/filter-products"
 import { Suspense } from "react"
-import { SalesRecordView } from "@/components/dashboard/sales-record-view"
+import { auth } from "@clerk/nextjs/server"
+import { Container } from "@/components/layout/container"
+import ListsProducts, { LoadingListProducts } from "@/components/pages/dashboard/lists-products"
+import { FallbackFilterButton, FilterProducts } from "@/components/pages/dashboard/filter-products"
+import { SalesRecordView } from "@/components/pages/dashboard/sales-record-view"
 import { SectionHeader, SectionContent } from "@/components/section"
 import { MainContainer } from "@/components/layout/main-container"
 
@@ -19,14 +19,14 @@ const DashboardPage = async () => {
 
   return (
     <MainContainer>
-      <Wrapper className="py-20">
+      <Container className="py-20">
         <SectionContent>
           <SectionHeader actionButton={actionButtonProduct}>produk kamu</SectionHeader>
           <Suspense fallback={<LoadingListProducts type="fallback" />}>
             <ListsProducts userId={userId!} token={token!} />
           </Suspense>
         </SectionContent>
-      </Wrapper>
+      </Container>
       <SalesRecordView token={token!} /> {/* checkout button ~ absolute position */}
     </MainContainer>
   )

@@ -1,11 +1,11 @@
 import { cn } from "@/lib/utils"
 import { TrashIcon } from "lucide-react"
-import { LoadingButton } from "../loading-button"
+import { LoadingButton } from "@/components/loading-button"
 import React, { useState } from "react"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import axios from "axios"
-import { toast } from "../ui/use-toast"
-import { DeleteModal } from "../delete-modal"
+import { toast } from "@/components/ui/use-toast"
+import { DeleteModal } from "@/components/delete-modal"
 
 interface DeleteProductProps {
   setIsOpen: (isOpen: boolean) => void

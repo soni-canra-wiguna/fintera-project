@@ -1,7 +1,7 @@
 "use client"
 
 import { Tag, TicketPercent, ArrowLeft, X } from "lucide-react"
-import { Button } from "../ui/button"
+import { Button } from "@/components/ui/button"
 import { HTMLAttributes, useState } from "react"
 import {
   Dialog,
@@ -12,12 +12,12 @@ import {
   DialogFooter,
   DialogTitle,
   DialogDescription,
-} from "../ui/dialog"
+} from "@/components/ui/dialog"
 import { discountProduct } from "@/redux/features/product/product-slice"
-import { Slider } from "../ui/slider"
+import { Slider } from "@/components/ui/slider"
 import { useDispatch } from "react-redux"
 import { formatToIDR } from "@/utils/format-to-idr"
-import { Input } from "../ui/input"
+import { Input } from "@/components/ui/input"
 
 type DiscountProps = "percent" | "nominal" | null
 

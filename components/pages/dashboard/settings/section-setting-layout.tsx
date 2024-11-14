@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils"
+import { WithDivElement } from "@/types"
 
-interface SectionSettingLayoutProps extends React.HTMLAttributes<HTMLDivElement> {
+interface SectionSettingLayoutProps extends WithDivElement {
   title: string
 }
 

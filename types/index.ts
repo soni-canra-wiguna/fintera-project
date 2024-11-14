@@ -2,6 +2,8 @@ export interface WithChildren {
   children: React.ReactNode
 }
 
+export interface WithDivElement extends React.HTMLAttributes<HTMLDivElement> {}
+
 export interface TokenProps {
   token: string
 }

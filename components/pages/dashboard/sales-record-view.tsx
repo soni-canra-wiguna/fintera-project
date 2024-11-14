@@ -1,8 +1,8 @@
 "use client"
 
 import { ShoppingBagIcon, Minus, LayoutGrid, Columns2, AlignJustify, Trash } from "lucide-react"
-import { Button } from "../ui/button"
-import { Card } from "../ui/card"
+import { Button } from "@/components/ui/button"
+import { Card } from "@/components/ui/card"
 import {
   Drawer,
   DrawerClose,
@@ -16,7 +16,7 @@ import { X, Plus } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover"
 import { useState } from "react"
-import { Carousel, CarouselContent, CarouselItem } from "../ui/carousel"
+import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel"
 import { useDispatch } from "react-redux"
 import { useSelector } from "react-redux"
 import { RootState } from "@/redux/store"
@@ -30,12 +30,12 @@ import {
 import { formatToIDR } from "@/utils/format-to-idr"
 import { useMounted } from "@/hook/use-mounted"
 import { toast } from "@/components/ui/use-toast"
-import { LoadingButton } from "../loading-button"
+import { LoadingButton } from "@/components/loading-button"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import axios from "axios"
 import { useAuth } from "@clerk/nextjs"
 import { CreateSalesRecordRequest } from "@/types/sales-record"
-import { DeleteModal } from "../delete-modal"
+import { DeleteModal } from "@/components/delete-modal"
 import { TokenProps } from "@/types"
 import { DiscountProduct } from "./discount-product"
 
