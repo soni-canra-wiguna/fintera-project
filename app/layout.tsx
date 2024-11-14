@@ -1,8 +1,13 @@
 import "@/styles/globals.css"
 
+import {
+  WithClerkProvider,
+  TanstackQueryProvider,
+  ReduxProvider,
+  ThemeProvider,
+} from "@/components/provider"
 import type { Metadata } from "next"
 import { Plus_Jakarta_Sans } from "next/font/google"
-import { WithClerkProvider, TanstackProvider, ReduxProvider, ThemeProvider } from "@/lib/provider"
 import NextTopLoader from "nextjs-toploader"
 import { Toaster } from "@/components/ui/toaster"
 import { MAIN_COLOR } from "@/constants/colors"
@@ -109,7 +114,7 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 export default function RootLayout({ children }: Readonly<WithChildren>) {
   return (
     <WithClerkProvider>
-      <TanstackProvider>
+      <TanstackQueryProvider>
         <ReduxProvider>
           <html lang="en">
             <body className={plusJakartaSans.className}>
@@ -126,7 +131,7 @@ export default function RootLayout({ children }: Readonly<WithChildren>) {
             </body>
           </html>
         </ReduxProvider>
-      </TanstackProvider>
+      </TanstackQueryProvider>
     </WithClerkProvider>
   )
 }
