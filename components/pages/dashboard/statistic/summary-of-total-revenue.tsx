@@ -11,8 +11,8 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { useQueryState } from "nuqs"
 import { format } from "date-fns"
 import { useQuery } from "@tanstack/react-query"
-import { salesRecordsServices } from "@/services/sales-records.services"
 import { WithTokenAndUserId } from "@/types"
+import { SalesRecordServices } from "@/services"
 
 const SummaryOfTotalRevenue: React.FC<WithTokenAndUserId> = ({ token, userId }) => {
   const [from] = useQueryState("from", {
@@ -24,7 +24,7 @@ const SummaryOfTotalRevenue: React.FC<WithTokenAndUserId> = ({ token, userId }) 
 
   const { data, isPending, isError } = useQuery<SalesRecordsResponse>({
     queryKey: ["sales_records", from, to],
-    queryFn: () => salesRecordsServices({ from, to, token, userId }),
+    queryFn: () => SalesRecordServices.salesRecords({ from, to, token, userId }),
   })
 
   const statistic = data?.statistic

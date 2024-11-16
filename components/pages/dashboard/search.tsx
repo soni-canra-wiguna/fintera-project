@@ -19,7 +19,6 @@ import { Loader2, SearchIcon, XIcon, ArrowUpFromLine, ChevronDown } from "lucide
 import { ProductCard } from "./product-card"
 import { Container } from "@/components/layout/container"
 import { TokenProps } from "@/types"
-import { searchProductsServices } from "@/services/product.services"
 import { SearchByType } from "@/app/api/products/search/route"
 import {
   Select,
@@ -29,6 +28,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { ProductServices } from "@/services"
 
 interface FilterSeachProductProps {
   searchBy: SearchByType
@@ -83,7 +83,12 @@ export const SearchBar: React.FC<TokenProps> = ({ token }) => {
   } = useQuery<Product[]>({
     queryKey: ["search_input", debounceSearchInput, searchBy],
     queryFn: () =>
-      searchProductsServices({ query: debounceSearchInput, searchBy, token, userId: userId ?? "" }),
+      ProductServices.searchProducts({
+        query: debounceSearchInput,
+        searchBy,
+        token,
+        userId: userId ?? "",
+      }),
     enabled: !!debounceSearchInput && !!searchBy,
   })
 

@@ -20,9 +20,9 @@ import { ChevronLeft, ChevronRight, ChevronsUpDown } from "lucide-react"
 import React, { useState } from "react"
 import { id } from "date-fns/locale"
 import Link from "next/link"
-import { salesRecordsPaginationServices } from "@/services/sales-records.services"
 import { SalesRecordsPaginationResponse } from "@/types/sales-record"
 import { WithTokenAndUserId } from "@/types"
+import { SalesRecordServices } from "@/services"
 
 type handleSortByType = "price" | "date" | "qty"
 
@@ -34,7 +34,7 @@ const TableRecords: React.FC<WithTokenAndUserId> = ({ token, userId }) => {
   const { data, isPending, isError } = useQuery<SalesRecordsPaginationResponse>({
     queryKey: ["pagging_salesrecord", sortBy, page, limit],
     queryFn: () =>
-      salesRecordsPaginationServices({
+      SalesRecordServices.salesRecordsPagination({
         sortBy,
         page,
         limit,

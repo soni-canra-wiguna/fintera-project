@@ -9,7 +9,7 @@ import { useEffect } from "react"
 import { useInView } from "react-intersection-observer"
 import { useQueryState } from "nuqs"
 import { TokenProps } from "@/types"
-import { listsProductsServices } from "@/services/product.services"
+import { ProductServices } from "@/services"
 
 interface ListProducts extends TokenProps {
   userId: string
@@ -48,7 +48,8 @@ const ListsProducts: React.FC<ListProducts> = ({ userId, token }) => {
     isFetchingNextPage,
   } = useInfiniteQuery({
     queryKey: ["lists_products", sortBy],
-    queryFn: ({ pageParam = 1 }) => listsProductsServices({ pageParam, sortBy, token, userId }),
+    queryFn: ({ pageParam = 1 }) =>
+      ProductServices.listsProducts({ pageParam, sortBy, token, userId }),
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPage) => {
       if (lastPage.currentPage < lastPage.totalPages) {
