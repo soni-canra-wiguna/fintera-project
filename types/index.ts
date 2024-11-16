@@ -19,3 +19,7 @@ export type TimeProps =
 export interface WithTokenAndUserId extends TokenProps {
   userId: string
 }
+
+export interface ParamsAPI {
+  params: { id: string }
+}

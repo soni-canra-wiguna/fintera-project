@@ -2,17 +2,7 @@ import { ProductSchema } from "@/schema"
 import { Product, Unit } from "@prisma/client"
 import { z } from "zod"
 
-export type CreateProductRequest = {
-  userId: string
-  title: string
-  description: string | null
-  image: string
-  price: number
-  category: string
-  stock: number
-  unit?: Unit
-  sku: string | null
-}
+export type CreateProductRequest = Omit<Product, "id" | "created_at" | "updated_at">
 
 export type ResponseDataType = Product
 

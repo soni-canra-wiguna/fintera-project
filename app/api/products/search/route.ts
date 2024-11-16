@@ -1,7 +1,9 @@
-import prisma from "@/lib/prisma"
 import { Prisma } from "@prisma/client"
-import { getSearchParams } from "@/utils/get-search-params"
 import { NextRequest, NextResponse } from "next/server"
+import { AuthRequest } from "@/lib/auth-request"
+import { getQueryParams } from "@/utils/get-query-params"
+import { errorResponse } from "@/lib/error-utils"
+import { ProductServicesAPI } from "@/utils/api/product"
 
 export const dynamic = "force-dynamic"
 
@@ -40,50 +42,29 @@ const searchFilter = (query: string, searchBy: SearchByType) => {
 
 export const GET = async (req: NextRequest) => {
   try {
-    const token = req.headers.get("authorization")
     const userId = req.headers.get("userId") ?? ""
 
-    if (!userId) {
-      return NextResponse.json({ message: "Unauthorized. User not Found." }, { status: 404 })
-    }
-    if (!token) {
-      return NextResponse.json({ message: "Unauthorized. No token provided." }, { status: 401 })
-    }
+    const authError = await AuthRequest.tokenWithUserId(userId, req)
+    if (authError) return authError
 
-    const query = getSearchParams(req, "query") ?? ""
-    const searchBy = (getSearchParams(req, "searchBy") ?? "productName") as SearchByType
+    const { query, searchBy } = getQueryParams(req)
     const filters = searchFilter(query, searchBy)
 
-    const products = await prisma.product.findMany({
-      where: {
-        userId,
-        AND: filters,
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
-    })
+    const products = await ProductServicesAPI.search(userId, filters)
 
-    const productNotFound = products.length === 0
-
-    if (query && productNotFound) {
-      return NextResponse.json(
-        {
-          message: "search results not found",
-          data: [],
-        },
-        { status: 200 },
-      )
+    if (query && products.length === 0) {
+      return errorResponse({ message: "search results not found", data: [] }, 200)
     }
 
-    const response = {
-      message: "Search results successfully retrieved",
-      data: products,
-    }
-
-    return NextResponse.json(response, { status: 200 })
+    return NextResponse.json(
+      {
+        message: "Search results successfully retrieved",
+        data: products,
+      },
+      { status: 200 },
+    )
   } catch (error) {
     console.log("[ERROR GET SEARCH RESULTS]", error)
-    return NextResponse.json({ message: "Internal server error" }, { status: 500 })
+    return errorResponse("Internal server error", 500)
   }
 }

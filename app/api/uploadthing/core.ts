@@ -41,11 +41,12 @@ export const ourFileRouter = {
         console.log(records)
         await prisma.product.createMany({
           data: records.map((record) => ({
-            userId: metadata.userId,
+            user_id: metadata.userId,
             title: record.title,
             description: record.description,
             image: record.image,
-            price: +record.price,
+            price_purchase: +record.price_purchase,
+            price_sale: +record.price_sale,
             category: record.category,
             stock: +record.stock,
             unit: record.unit ?? "PCS",

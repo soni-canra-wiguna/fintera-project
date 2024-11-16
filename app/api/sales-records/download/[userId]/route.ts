@@ -1,9 +1,10 @@
-import prisma from "@/lib/prisma"
 import { NextRequest, NextResponse } from "next/server"
 import { format } from "date-fns"
 import { getSearchParams } from "@/utils/get-search-params"
 import ExcelJS from "exceljs"
 import { Buffer } from "buffer"
+import { errorResponse } from "@/lib/error-utils"
+import { SalesRecordServicesAPI } from "@/utils/api/sales-record"
 
 export const dynamic = "force-dynamic"
 
@@ -18,14 +19,7 @@ export const GET = async (req: NextRequest, { params }: { params: { userId: stri
 
     const fileType: "xlsx" | "csv" = (getSearchParams(req, "fileType") as FileType) ?? "csv"
 
-    const salesRecord = await prisma.salesRecord.findMany({
-      where: {
-        userId: userId,
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
-    })
+    const salesRecord = await SalesRecordServicesAPI.download(userId)
 
     const workbook = new ExcelJS.Workbook()
     const worksheet = workbook.addWorksheet("Riwayat Penjualan")
@@ -36,24 +30,48 @@ export const GET = async (req: NextRequest, { params }: { params: { userId: stri
       { header: "Nama Produk", key: "title" },
       { header: "Kategori", key: "category" },
       { header: "Gambar", key: "image" },
-      { header: "Harga", key: "price" },
+      { header: "Harga Beli", key: "price_purchase" },
+      { header: "Harga Jual", key: "price_sale" },
       { header: "QTY", key: "quantity" },
-      { header: "Total Harga", key: "totalPrice" },
+      { header: "Harga Jual", key: "total_price" },
+      { header: "Tipe Transaksi", key: "transaction_type" },
+      { header: "Produt Id", key: "product_id" },
+      { header: "User Id", key: "user_id" },
       { header: "Tanggal Pembelian", key: "createdAt" },
     ]
 
     salesRecord.forEach(
-      ({ sku, title, category, image, price, quantity, totalPrice, createdAt }, index) => {
+      (
+        {
+          sku,
+          title,
+          category,
+          image,
+          price_purchase,
+          price_sale,
+          quantity,
+          total_price,
+          transaction_type,
+          product_id,
+          user_id,
+          created_at,
+        },
+        index,
+      ) => {
         worksheet.addRow({
           no: index + 1,
           sku,
           title,
           category,
-          image: fileType === "xlsx" ? { text: image, hyperlink: image } : image, // Hyperlink image
-          price,
+          image: fileType === "xlsx" ? { text: image, hyperlink: image } : image,
+          price_purchase,
+          price_sale,
           quantity,
-          totalPrice,
-          createdAt: format(createdAt, "dd-MM-yyyy"),
+          total_price,
+          transaction_type,
+          product_id,
+          user_id,
+          created_at: format(created_at, "dd-MM-yyyy"),
         })
       },
     )
@@ -71,11 +89,11 @@ export const GET = async (req: NextRequest, { params }: { params: { userId: stri
         }),
       )
       contentType = "text/csv"
-      fileName = "catatanku.csv"
+      fileName = "catatanPenjualan.csv"
     } else {
       buffer = Buffer.from(await workbook.xlsx.writeBuffer())
       contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-      fileName = "catatanku.xlsx"
+      fileName = "catatanPenjualan.xlsx"
     }
 
     return new NextResponse(buffer, {
@@ -86,13 +104,6 @@ export const GET = async (req: NextRequest, { params }: { params: { userId: stri
     })
   } catch (error) {
     console.log("[ERROR GET DOWNLOAD SALES RECORDS] : ", error)
-    return NextResponse.json(
-      {
-        message: "internal server error",
-      },
-      {
-        status: 500,
-      },
-    )
+    return errorResponse("Internal server error", 500)
   }
 }
