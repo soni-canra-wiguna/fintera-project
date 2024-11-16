@@ -8,10 +8,10 @@ datasource db {
 }
 
 model User {
-  id          String        @id @default(uuid())
-  userId      String        @unique
-  products    Product[]
-  salesRecord SalesRecord[]
+  id            String        @id @default(uuid())
+  user_id       String        @unique
+  products      Product[]
+  sales_records SalesRecord[]
 
   @@map("users")
 }
@@ -28,43 +28,50 @@ enum Unit {
   DOZEN
 }
 
+enum TransactionType {
+  SALE // Penjualan
+  EXPENSE // Pengeluaran
+}
+
 model Product {
-  id          String  @id @default(uuid())
-  userId      String
-  title       String  @db.VarChar(255)
-  description String?
-  image       String
-  price       Int
-  category    String  @db.VarChar(50)
-  stock       Int
-  sku         String? @db.VarChar(50)
-  unit        Unit?   @default(PCS)
+  id             String        @id @default(uuid())
+  title          String        @db.VarChar(255)
+  description    String?
+  image          String?
+  price_purchase Int // Harga pembelian per unit
+  price_sale     Int // Harga penjualan per unit
+  category       String        @db.VarChar(50)
+  stock          Int
+  sku            String?       @db.VarChar(50)
+  unit           Unit?         @default(PCS)
+  sales_records  SalesRecord[]
+  user_id        String
+  user           User          @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: Cascade)
+  created_at     DateTime      @default(now())
+  updated_at     DateTime      @updatedAt
 
-  user User @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([title, createdAt, userId])
+  @@index([title, created_at, user_id])
   @@map("products")
 }
 
 model SalesRecord {
-  id         String  @id @default(uuid())
-  userId     String
-  title      String  @db.VarChar(255)
-  category   String  @db.VarChar(50)
-  image      String
-  price      Int
-  sku        String? @db.VarChar(50)
-  quantity   Int // total product sales
-  totalPrice Int // price * quantity
+  id               String          @id @default(uuid())
+  title            String          @db.VarChar(255)
+  category         String          @db.VarChar(50)
+  image            String?
+  sku              String?         @db.VarChar(50)
+  quantity         Int
+  price_purchase   Int
+  price_sale       Int
+  total_price      Int // price_sale * quantity
+  transaction_type TransactionType
+  user_id          String
+  user             User            @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: Cascade)
+  product_id       String
+  product          Product         @relation(fields: [product_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  created_at       DateTime        @default(now())
+  updated_at       DateTime        @updatedAt
 
-  user User @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([title, createdAt, userId])
+  @@index([title, created_at, user_id])
   @@map("sales-records")
 }
