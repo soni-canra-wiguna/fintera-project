@@ -18,11 +18,9 @@ interface NavigationItemProps {
 
 interface BottomBarItemProps {
   item: NavigationItemProps
-  pathname: string
 }
 
 export const BottomBarNavigation = () => {
-  const pathname = usePathname()
   const { formatToday } = dateTime()
 
   const navigationItems = [
@@ -49,13 +47,15 @@ export const BottomBarNavigation = () => {
   return (
     <>
       {navigationItems.map((item) => {
-        return <BottomBarItem key={item.label} item={item} pathname={pathname} />
+        return <BottomBarItem key={item.label} item={item} />
       })}
     </>
   )
 }
 
-const BottomBarItem: React.FC<BottomBarItemProps> = ({ item, pathname }) => {
+const BottomBarItem: React.FC<BottomBarItemProps> = ({ item }) => {
+  const pathname = usePathname()
+
   return (
     <Link
       key={item.label}
