@@ -1,8 +1,8 @@
-import { SalesRecordValidation } from "@/schema/sales-record.schema"
+import { SalesRecordSchema } from "@/schema"
 import { SalesRecord } from "@prisma/client"
 import { z } from "zod"
 
-export type CreateSalesRecordRequest = z.infer<typeof SalesRecordValidation.CREATE>
+export type CreateSalesRecordRequest = z.infer<typeof SalesRecordSchema.CREATE>
 
 export type ResponseDataType = SalesRecord
 

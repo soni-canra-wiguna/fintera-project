@@ -1,6 +1,7 @@
 "use client"
 
-import { InferProductType, ProductValidation } from "@/schema/product.schema"
+import { ProductSchema } from "@/schema"
+import { InferProductSchemaType } from "@/types/product"
 import React from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
@@ -20,8 +21,8 @@ export const FormCreateProduct: React.FC<FormCreateProductProps> = ({ userId, to
   const router = useRouter()
   const queryClient = useQueryClient()
 
-  const form = useForm<InferProductType>({
-    resolver: zodResolver(ProductValidation.CREATE),
+  const form = useForm<InferProductSchemaType>({
+    resolver: zodResolver(ProductSchema.CREATE),
     defaultValues: {
       userId: userId!,
       title: "",
@@ -40,7 +41,7 @@ export const FormCreateProduct: React.FC<FormCreateProductProps> = ({ userId, to
     mutate: createProduct,
     isError,
   } = useMutation({
-    mutationFn: async (data: InferProductType) => {
+    mutationFn: async (data: InferProductSchemaType) => {
       await axios.post("/api/products", data, {
         headers: {
           "Content-Type": "application/json",
@@ -76,7 +77,7 @@ export const FormCreateProduct: React.FC<FormCreateProductProps> = ({ userId, to
     },
   })
 
-  const onSubmit = (data: InferProductType) => {
+  const onSubmit = (data: InferProductSchemaType) => {
     createProduct(data)
   }
 

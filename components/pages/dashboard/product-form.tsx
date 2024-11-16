@@ -29,11 +29,11 @@ import { FileSearch } from "lucide-react"
 import { PreviewDetailProduct } from "./preview-product"
 import { TextEditor } from "@/components/text-editor"
 import { Product } from "@prisma/client"
-import { InferProductType } from "@/schema/product.schema"
+import { InferProductSchemaType } from "@/types/product"
 
 export interface ProductFormProps {
-  form: UseFormReturn<InferProductType>
-  onSubmit: (data: InferProductType) => void
+  form: UseFormReturn<InferProductSchemaType>
+  onSubmit: (data: InferProductSchemaType) => void
   isPending: boolean
   label: "create" | "update"
   previewProduct: Product

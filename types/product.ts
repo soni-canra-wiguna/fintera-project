@@ -1,4 +1,6 @@
+import { ProductSchema } from "@/schema"
 import { Product, Unit } from "@prisma/client"
+import { z } from "zod"
 
 export type CreateProductRequest = {
   userId: string
@@ -27,3 +29,5 @@ export interface SearchResponse {
   message: string
   data: ResponseDataType[]
 }
+
+export interface InferProductSchemaType extends z.infer<typeof ProductSchema.CREATE> {}

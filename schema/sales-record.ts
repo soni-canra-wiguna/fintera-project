@@ -1,6 +1,6 @@
 import * as z from "zod"
 
-export class SalesRecordValidation {
+export class SalesRecordSchema {
   static readonly CREATE = z.object({
     userId: z.string(),
     title: z.string(),

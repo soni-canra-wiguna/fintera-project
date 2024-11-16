@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { z } from "zod"
 import prisma from "@/lib/prisma"
-import { ProductValidation } from "@/schema/product.schema"
+import { ProductSchema } from "@/schema"
 import { Validation } from "@/schema/validation"
 import { CreateProductRequest } from "@/types/product"
 
@@ -19,7 +19,7 @@ export const PUT = async (req: NextRequest, { params }: { params: { id: string }
     }
 
     const request: CreateProductRequest = await req.json()
-    const response = Validation.validate(ProductValidation.CREATE, request)
+    const response = Validation.validate(ProductSchema.CREATE, request)
 
     await prisma.product.update({
       where: {
@@ -72,7 +72,7 @@ export const PATCH = async (req: NextRequest, { params }: { params: { id: string
     }
 
     const request: CreateProductRequest = await req.json()
-    const response = Validation.validate(ProductValidation.UPDATE, request)
+    const response = Validation.validate(ProductSchema.UPDATE, request)
 
     await prisma.product.update({
       where: {

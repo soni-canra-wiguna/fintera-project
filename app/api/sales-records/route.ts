@@ -1,5 +1,5 @@
 import prisma from "@/lib/prisma"
-import { SalesRecordValidation } from "@/schema/sales-record.schema"
+import { SalesRecordSchema } from "@/schema"
 import { Validation } from "@/schema/validation"
 import { CreateSalesRecordRequest } from "@/types/sales-record"
 import { getSearchParams } from "@/utils/get-search-params"
@@ -15,7 +15,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
     }
 
     const request: CreateSalesRecordRequest[] = await req.json()
-    const response = Validation.validate(SalesRecordValidation.ARRAY_CREATE, request)
+    const response = Validation.validate(SalesRecordSchema.ARRAY_CREATE, request)
 
     if (!Array.isArray(response) || response.length === 0) {
       return NextResponse.json(

@@ -1,7 +1,7 @@
 import { Unit } from "@prisma/client"
 import * as z from "zod"
 
-export class ProductValidation {
+export class ProductSchema {
   static readonly CREATE = z.object({
     userId: z.string().min(1, {
       message: "userId is required",
@@ -40,5 +40,3 @@ export class ProductValidation {
     sku: z.string().max(50).optional(),
   })
 }
-
-export type InferProductType = z.infer<typeof ProductValidation.CREATE>

@@ -1,6 +1,7 @@
 "use client"
 
-import { InferProductType, ProductValidation } from "@/schema/product.schema"
+import { ProductSchema } from "@/schema"
+import { InferProductSchemaType } from "@/types/product"
 import React from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
@@ -33,8 +34,8 @@ export const FormEditProduct: React.FC<FormEditProductProps> = ({ token, product
     sku: product.sku!,
   }
 
-  const form = useForm<InferProductType>({
-    resolver: zodResolver(ProductValidation.CREATE),
+  const form = useForm<InferProductSchemaType>({
+    resolver: zodResolver(ProductSchema.CREATE),
     defaultValues,
   })
 
@@ -43,7 +44,7 @@ export const FormEditProduct: React.FC<FormEditProductProps> = ({ token, product
     mutate: createProduct,
     isError,
   } = useMutation({
-    mutationFn: async (data: InferProductType) => {
+    mutationFn: async (data: InferProductSchemaType) => {
       await axios.put(`/api/products/${product.id}`, data, {
         headers: {
           "Content-Type": "application/json",
@@ -70,7 +71,7 @@ export const FormEditProduct: React.FC<FormEditProductProps> = ({ token, product
     },
   })
 
-  const onSubmit = (data: InferProductType) => {
+  const onSubmit = (data: InferProductSchemaType) => {
     createProduct(data)
   }
 
