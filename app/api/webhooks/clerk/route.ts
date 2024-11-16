@@ -1,8 +1,9 @@
 import { WebhookEvent } from "@clerk/nextjs/server"
 import { NextRequest, NextResponse } from "next/server"
-import prisma from "@/lib/prisma"
 import { headers } from "next/headers"
 import { Webhook } from "svix"
+import { errorResponse } from "@/lib/error-utils"
+import { UserServicesAPI } from "@/utils/api/user"
 
 const webhookSecret = process.env.CLERK_WEBHOOK_SECRET || ``
 
@@ -38,41 +39,26 @@ export async function POST(req: NextRequest) {
       "apiVersion": "v1"
     } 
     */
-    const { id: userId } = payload.data
-    if (!userId) return NextResponse.json({ error: "No user ID provided" }, { status: 400 })
+    const { id: user_id } = payload.data
+    if (!user_id) return NextResponse.json({ message: "No user ID provided" }, { status: 400 })
 
     // Create or delete a user in the database based on the Clerk Webhook event
-    let user = null
     switch (payload.type) {
       case "user.created": {
-        user = await prisma.user.upsert({
-          where: {
-            userId,
-          },
-          update: {
-            userId,
-          },
-          create: {
-            userId,
-          },
-        })
+        await UserServicesAPI.upsert(user_id)
         break
       }
       case "user.deleted": {
-        user = await prisma.user.delete({
-          where: {
-            userId,
-          },
-        })
+        await UserServicesAPI.delete(user_id)
         break
       }
       default:
-        break
+        errorResponse("Event type not handled", 500)
     }
 
-    return NextResponse.json({ user })
+    return NextResponse.json({ message: "" })
   } catch (error) {
     console.log("[ERROR POST USER(WEBHOOK USER)] : ", error)
-    return NextResponse.json({ error }, { status: 500 })
+    return errorResponse(error, 500)
   }
 }
