@@ -1,11 +1,12 @@
 "use client"
 
 import { cn } from "@/lib/utils"
+import { WithDivElement } from "@/types"
 import { Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
 import React from "react"
 
-interface ThemeSwitcherProps extends React.HTMLAttributes<HTMLDivElement> {
+interface ThemeSwitcherProps extends WithDivElement {
   togglePopover?: () => void
   sizeIcon?: string
 }
