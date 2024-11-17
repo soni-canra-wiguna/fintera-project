@@ -12,6 +12,7 @@ import NextTopLoader from "nextjs-toploader"
 import { Toaster } from "@/components/ui/toaster"
 import { MAIN_COLOR } from "@/constants/colors"
 import { WithChildren } from "@/types"
+import { GoogleAnalytics } from "@/components/analytics"
 
 export const metadata: Metadata = {
   title: {
@@ -117,6 +118,7 @@ export default function RootLayout({ children }: Readonly<WithChildren>) {
       <TanstackQueryProvider>
         <ReduxProvider>
           <html lang="en">
+            {/* <GoogleAnalytics /> */}
             <body className={plusJakartaSans.className}>
               <NextTopLoader color={MAIN_COLOR} height={3} showSpinner={false} />
               <ThemeProvider
