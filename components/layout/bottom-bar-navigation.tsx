@@ -34,7 +34,7 @@ export const BottomBarNavigation = () => {
       label: "tambah",
       icon: PlusCircle,
       path: "/dashboard/products/create",
-      href: "/dashboard/create",
+      href: "/dashboard/products/create",
     },
     {
       label: "statistik",
