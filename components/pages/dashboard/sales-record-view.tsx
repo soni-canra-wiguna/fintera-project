@@ -50,7 +50,9 @@ interface ResetListsProductsButtonProps {
   closeDrawer: () => void
 }
 
-type AddProductToRecordProps = ResetListsProductsButtonProps & TokenProps
+interface AddProductToRecordProps extends ResetListsProductsButtonProps, TokenProps {
+  products: ProductSliceType[]
+}
 
 export const SalesRecordView: React.FC<TokenProps> = ({ token }) => {
   const [isOpen, setIsOpen] = useState(false)
@@ -148,6 +150,7 @@ export const SalesRecordView: React.FC<TokenProps> = ({ token }) => {
                 token={token}
                 closeDrawer={() => setIsOpen(!isOpen)}
                 disabledButton={disabledButton}
+                products={products}
               />
             </div>
           </div>
@@ -319,12 +322,12 @@ const AddProductToRecord: React.FC<AddProductToRecordProps> = ({
   token,
   closeDrawer,
   disabledButton,
+  products,
 }) => {
   const { userId } = useAuth()
   const dispatch = useDispatch()
   const { isMounted } = useMounted()
   const queryClient = useQueryClient()
-  const { products } = useSelector((state: RootState) => state.products)
 
   const {
     mutate: createRecords,
