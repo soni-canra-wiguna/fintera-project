@@ -36,7 +36,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
 export const GET = async (req: NextRequest, res: NextResponse): Promise<any> => {
   try {
     const userId = req.headers.get("userId") ?? ""
-    const authError = AuthRequest.token(req)
+    const authError = await AuthRequest.token(req)
 
     if (authError) return authError
 
