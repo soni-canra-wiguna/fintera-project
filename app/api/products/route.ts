@@ -7,16 +7,34 @@ import { errorResponse } from "@/lib/error-utils"
 import { AuthRequest } from "@/lib/auth-request"
 import { ProductServicesAPI } from "@/utils/api/product"
 import { getQueryParams } from "@/utils/get-query-params"
+import { SalesRecordServicesAPI } from "@/utils/api/sales-record"
 
 export const POST = async (req: NextRequest, res: NextResponse) => {
   try {
-    const authError = await AuthRequest.token(req)
+    const userId = req.headers.get("userId") ?? ""
+
+    const authError = await AuthRequest.tokenWithUserId(userId, req)
     if (authError) return authError
 
     const request: CreateProductRequest = await req.json()
     const response = Validation.validate(ProductSchema.CREATE, request)
 
-    await ProductServicesAPI.create(response)
+    const { id: productId } = await ProductServicesAPI.create(response)
+
+    /*  every product created will be added to the sales record. */
+    await SalesRecordServicesAPI.create({
+      title: response.title,
+      image: response.image!,
+      category: response.category,
+      price_purchase: response.price_purchase,
+      price_sale: response.price_sale,
+      quantity: response.stock,
+      total_price: response.stock * response.price_purchase,
+      transaction_type: "EXPENSE",
+      sku: response.sku!,
+      user_id: userId,
+      product_id: productId,
+    })
 
     return NextResponse.json({ message: "Successfully created Product" }, { status: 201 })
   } catch (error) {

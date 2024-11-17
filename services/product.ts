@@ -3,7 +3,7 @@ import { Product } from "@prisma/client"
 
 import { SearchByType } from "@/app/api/products/search/route"
 import { ProductSliceType } from "@/redux/features/product/product-slice"
-import { DataProps, TokenProps, WithTokenAndUserId } from "@/types"
+import { DataProps, WithTokenAndUserId } from "@/types"
 import { InferProductSchemaType, ProductResponse, SearchResponse } from "@/types/product"
 
 interface ListsProductsServicesProps extends WithTokenAndUserId {
@@ -16,7 +16,9 @@ interface searchServicesProps extends WithTokenAndUserId {
   searchBy: SearchByType
 }
 
-interface CreateProductServicesProps extends TokenProps, DataProps<InferProductSchemaType> {}
+interface CreateProductServicesProps
+  extends WithTokenAndUserId,
+    DataProps<InferProductSchemaType> {}
 
 interface UpdateStockProps extends WithTokenAndUserId {
   products: ProductSliceType[]
@@ -59,11 +61,12 @@ export class ProductServices {
     return data.data
   }
 
-  static async createProduct({ token, data }: CreateProductServicesProps) {
+  static async create({ userId, token, data }: CreateProductServicesProps) {
     await axios.post("/api/products", data, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
+        userId: userId,
       },
     })
   }

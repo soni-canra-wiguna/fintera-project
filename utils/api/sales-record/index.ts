@@ -2,8 +2,14 @@ import prisma from "@/lib/prisma"
 import { CreateSalesRecordRequest } from "@/types/sales-record"
 
 export class SalesRecordServicesAPI {
-  static async create(response: CreateSalesRecordRequest[]) {
+  static async createMany(response: CreateSalesRecordRequest[]) {
     await prisma.salesRecord.createMany({
+      data: response,
+    })
+  }
+
+  static async create(response: CreateSalesRecordRequest) {
+    await prisma.salesRecord.create({
       data: response,
     })
   }

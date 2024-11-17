@@ -21,7 +21,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
       return errorResponse("Invalid request path", 400)
     }
 
-    await SalesRecordServicesAPI.create(response)
+    await SalesRecordServicesAPI.createMany(response)
 
     return NextResponse.json({ message: "Successfully created sale record" }, { status: 201 })
   } catch (error) {

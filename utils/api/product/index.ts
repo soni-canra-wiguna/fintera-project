@@ -3,9 +3,12 @@ import { CreateProductRequest } from "@/types/product"
 
 export class ProductServicesAPI {
   static async create(response: CreateProductRequest) {
-    await prisma.product.create({
+    const productId = await prisma.product.create({
       data: response,
+      select: { id: true },
     })
+
+    return productId
   }
 
   static async get(userId: string, orderBy: any, skip: number, limit: number) {

@@ -43,7 +43,7 @@ export const FormCreateProduct: React.FC<FormCreateProductProps> = ({ userId, to
     isError,
   } = useMutation({
     mutationFn: async (data: InferProductSchemaType) => {
-      await ProductServices.createProduct({ token, data })
+      await ProductServices.create({ userId: userId!, token, data })
     },
     onSuccess: () => {
       form.reset({
