@@ -23,11 +23,12 @@ export const FormEditProduct: React.FC<FormEditProductProps> = ({ token, product
   const queryClient = useQueryClient()
 
   const defaultValues = {
-    userId: product.userId,
+    user_id: product.user_id,
     title: product.title,
     description: product.description!,
-    image: product.image,
-    price: product.price,
+    image: product.image!,
+    price_purchase: product.price_purchase,
+    price_sale: product.price_sale,
     category: product.category,
     stock: product.stock,
     unit: product.unit!,
@@ -49,7 +50,7 @@ export const FormEditProduct: React.FC<FormEditProductProps> = ({ token, product
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
-          userId: product.userId,
+          userId: product.user_id,
         },
       })
     },
@@ -77,17 +78,18 @@ export const FormEditProduct: React.FC<FormEditProductProps> = ({ token, product
 
   const previewProduct = {
     id: uuidv4(),
-    userId: product.userId,
+    user_id: product.user_id,
     title: form.watch("title") ?? "",
     image: form.watch("image") ?? "",
     description: form.watch("description") ?? "",
     sku: form.watch("sku") ?? "",
-    price: form.watch("price") ?? 0,
+    price_purchase: form.watch("price_purchase") ?? 0,
+    price_sale: form.watch("price_sale") ?? 0,
     category: form.watch("category") ?? "PCS",
     stock: form.watch("stock"),
     unit: form.watch("unit")!,
-    createdAt: new Date(),
-    updatedAt: new Date(),
+    created_at: new Date(),
+    updated_at: new Date(),
   }
 
   return (

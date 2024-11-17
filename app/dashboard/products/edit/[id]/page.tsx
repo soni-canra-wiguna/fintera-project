@@ -12,7 +12,7 @@ const EditProductPage: React.FC<{ params: { id: string } }> = async ({ params })
   const product = await prisma.product.findUnique({
     where: {
       id: params.id,
-      userId: userId!,
+      user_id: userId!,
     },
   })
 

@@ -55,7 +55,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
           render={({ field }) => {
             return (
               <FormItem>
-                <FormLabel>Image</FormLabel>
+                <FormLabel>Image(optional)</FormLabel>
                 <FormControl>
                   <FileUpload endpoint="product" value={field.value} onChange={field.onChange} />
                 </FormControl>
@@ -97,11 +97,11 @@ export const ProductForm: React.FC<ProductFormProps> = ({
         <div className="flex w-full items-start gap-4">
           <FormField
             control={form.control}
-            name="price"
+            name="price_purchase"
             render={({ field }) => {
               return (
                 <FormItem className="flex-1">
-                  <FormLabel>Harga produk</FormLabel>
+                  <FormLabel>Harga beli produk</FormLabel>
                   <FormControl>
                     <Input type="number" placeholder="masukkan nominal harga" {...field} />
                   </FormControl>
@@ -113,7 +113,30 @@ export const ProductForm: React.FC<ProductFormProps> = ({
           <div className="space-y-2">
             <Label>Preview harga</Label>
             <div className="flex h-10 w-full items-center rounded-xl bg-secondary px-4">
-              {formatToIDR(form.watch("price"))}
+              {formatToIDR(form.watch("price_purchase"))}
+            </div>
+          </div>
+        </div>
+        <div className="flex w-full items-start gap-4">
+          <FormField
+            control={form.control}
+            name="price_sale"
+            render={({ field }) => {
+              return (
+                <FormItem className="flex-1">
+                  <FormLabel>Harga jual produk</FormLabel>
+                  <FormControl>
+                    <Input type="number" placeholder="masukkan nominal harga" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )
+            }}
+          />
+          <div className="space-y-2">
+            <Label>Preview harga</Label>
+            <div className="flex h-10 w-full items-center rounded-xl bg-secondary px-4">
+              {formatToIDR(form.watch("price_sale"))}
             </div>
           </div>
         </div>
@@ -200,7 +223,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
             disabled={isPending}
             className="w-full capitalize"
           >
-            {label} produk
+            {label === "create" ? "tambahkan" : "update"} produk
           </LoadingButton>
           <PreviewDetailProduct product={previewProduct}>
             <Button className="w-full" variant="outline">

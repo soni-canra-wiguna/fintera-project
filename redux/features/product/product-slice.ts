@@ -6,7 +6,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 export type ProductSliceType = Omit<CreateProductRequest, "description"> & {
   id: string
   quantity: number // jumlah produk yang di tambahkan
-  unitPrice: number
+  unit_price: number
 }
 
 export type DiscountType = Pick<ProductSliceType, "id"> & {
@@ -33,7 +33,7 @@ export const productSlice = createSlice({
         localStorage.setItem("products", JSON.stringify(state.products))
       } else {
         product.quantity += 1
-        product.price = product.unitPrice * product.quantity
+        product.price_sale = product.unit_price * product.quantity
         localStorage.setItem("products", JSON.stringify(state.products))
       }
     },
@@ -41,11 +41,11 @@ export const productSlice = createSlice({
       const product = state.products.find((product) => product.id === action.payload.id)
       if (product && product.quantity > 1) {
         product.quantity -= 1
-        product.price = product.unitPrice * product.quantity
+        product.price_sale = product.unit_price * product.quantity
         localStorage.setItem("products", JSON.stringify(state.products))
       } else if (product && product.quantity === 1) {
         product.quantity = 1
-        product.price = product.unitPrice
+        product.price_sale = product.unit_price
         localStorage.setItem("products", JSON.stringify(state.products))
       }
     },
@@ -60,7 +60,7 @@ export const productSlice = createSlice({
     discountProduct: (state, action: PayloadAction<DiscountType>) => {
       const product = state.products.find((product) => product.id === action.payload.id)
       if (product) {
-        product.price -= action.payload.discount
+        product.price_sale -= action.payload.discount
       }
       localStorage.setItem("products", JSON.stringify(state.products))
     },

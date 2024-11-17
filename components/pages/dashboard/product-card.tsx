@@ -26,16 +26,25 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, userId, token
 
   const dataProduct = {
     id: product.id,
-    userId: product.userId,
+    user_id: product.user_id,
     title: product.title,
     image: product.image,
-    price: product.price,
+    price_purchase: product.price_purchase,
+    price_sale: product.price_sale,
     stock: product.stock,
     category: product.category,
     quantity: 1,
     unit: product.unit!,
-    unitPrice: product.price,
+    unit_price: product.price_sale,
     sku: product.sku,
+  }
+
+  const handleIncermentProduct = () => {
+    dispacth(incermentProduct(dataProduct))
+    toast({
+      title: "produk berhasil ditambahkan",
+      variant: "success",
+    })
   }
 
   return (
@@ -49,11 +58,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, userId, token
     >
       <div className="flex w-full items-start gap-2">
         <div className="aspect-square h-20 overflow-hidden rounded-xl border">
-          <img alt="image" src={product.image} className="size-full object-cover" />
+          <img alt="image" src={product.image ?? ""} className="size-full object-cover" />
         </div>
         <div className="">
           <h4 className="text-sm font-semibold capitalize">{product.title}</h4>
-          <p className="text-xs">{formatToIDR(product.price)}</p>
+          <p className="text-xs">{formatToIDR(product.price_sale)}</p>
           <p className="text-xs">
             stock: {product.stock} {product.unit}
           </p>
@@ -62,13 +71,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, userId, token
       <div className="flex h-full flex-col justify-between gap-2">
         <MoreOptions product={product} userId={userId} token={token} />
         <Button
-          onClick={() => {
-            dispacth(incermentProduct(dataProduct))
-            toast({
-              title: "produk berhasil ditambahkan",
-              variant: "success",
-            })
-          }}
+          onClick={handleIncermentProduct}
           disabled={product.stock <= 0}
           className="size-8 rounded-lg"
           size="icon"

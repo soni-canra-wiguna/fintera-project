@@ -37,7 +37,7 @@ export const GET = async (req: NextRequest, { params }: { params: { userId: stri
       { header: "Tipe Transaksi", key: "transaction_type" },
       { header: "Produt Id", key: "product_id" },
       { header: "User Id", key: "user_id" },
-      { header: "Tanggal Pembelian", key: "createdAt" },
+      { header: "Tanggal Pembelian", key: "created_at" },
     ]
 
     salesRecord.forEach(

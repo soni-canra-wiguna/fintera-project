@@ -50,7 +50,7 @@ const WrapperDetailProduct: React.FC<WrapperDetailProductProps> = ({
 }) => {
   return (
     <div className={cn("flex w-full items-start px-3 py-3 text-sm", className)}>
-      <div className="w-16">
+      <div className="w-20">
         <h5 className="text-balance font-semibold capitalize">{title}</h5>
       </div>
       <span className="mx-2">:</span>
@@ -83,27 +83,31 @@ export const PreviewDetailProduct: React.FC<PreviewDetailProductProps> = ({
         </DrawerHeader>
         <div className="scrollbar-hide h-full max-h-[450px] w-full overflow-y-auto p-4">
           <div className="mb-5 aspect-[14/9] w-full overflow-hidden rounded-xl">
-            <img src={product.image} alt={product.title} className="size-full object-cover" />
+            <img src={product.image ?? ""} alt={product.title} className="size-full object-cover" />
           </div>
           <div className="overflow-hidden rounded-xl border">
             <WrapperDetailProduct title="title">
               <Balancer className="">{product.title}</Balancer>
             </WrapperDetailProduct>
-            <WrapperDetailProduct className="bg-secondary" title="harga">
-              <p className="">{formatToIDR(product.price)}</p>
+            <WrapperDetailProduct className="bg-secondary" title="harga beli">
+              <p className="">{formatToIDR(product.price_purchase)}</p>
             </WrapperDetailProduct>
-            <WrapperDetailProduct title="kategori">
+            <WrapperDetailProduct title="harga jual">
+              <p className="">{formatToIDR(product.price_sale)}</p>
+            </WrapperDetailProduct>
+
+            <WrapperDetailProduct className="bg-secondary" title="kategori">
               <Badge variant="secondary" className="capitalize">
                 {product.category}
               </Badge>
             </WrapperDetailProduct>
-            <WrapperDetailProduct className="bg-secondary" title="sku">
+            <WrapperDetailProduct title="sku">
               <p>{product.sku}</p>
             </WrapperDetailProduct>
-            <WrapperDetailProduct title="stock">
+            <WrapperDetailProduct className="bg-secondary" title="stock">
               <p className="">{`${product.stock} ${product.unit}`}</p>
             </WrapperDetailProduct>
-            <WrapperDetailProduct className="bg-secondary" title="deskripsi">
+            <WrapperDetailProduct title="deskripsi">
               <WithTypographyStyle>{parse(product.description!)}</WithTypographyStyle>
             </WrapperDetailProduct>
           </div>

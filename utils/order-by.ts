@@ -2,9 +2,9 @@ export class OrderBy {
   static product(sortBy: string | null) {
     switch (sortBy) {
       case "new":
-        return { createdAt: "desc" }
+        return { created_at: "desc" }
       case "old":
-        return { createdAt: "asc" }
+        return { created_at: "asc" }
       case "a-z":
         return { title: "asc" }
       case "z-a":
@@ -18,7 +18,7 @@ export class OrderBy {
       case "stock-low":
         return { stock: "asc" }
       default:
-        return { createdAt: "desc" }
+        return { created_at: "desc" }
     }
   }
 
@@ -33,11 +33,11 @@ export class OrderBy {
       case "quantity-high":
         return { quantity: "desc" }
       case "date-desc":
-        return { createdAt: "desc" }
+        return { created_at: "desc" }
       case "date-asc":
-        return { createdAt: "asc" }
+        return { created_at: "asc" }
       default:
-        return { createdAt: "desc" }
+        return { created_at: "desc" }
     }
   }
 }

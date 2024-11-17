@@ -175,7 +175,7 @@ export const LoadingTableProduct = () => {
 
 const TableList: React.FC<{ data: SalesRecordsPaginationResponse | undefined }> = ({ data }) => {
   const tableItem = data?.data.map((p) => {
-    const formattedDate = format(p.createdAt, "EEE, dd MMM yyyy", {
+    const formattedDate = format(p.created_at, "EEE, dd MMM yyyy", {
       locale: id,
     })
     return (
@@ -188,13 +188,13 @@ const TableList: React.FC<{ data: SalesRecordsPaginationResponse | undefined }> 
           </Badge>
         </td>
         <td className="w-36 truncate border p-3 text-left">
-          <Link href={p.image} target="_blank" className="truncate text-main">
-            {p.image.slice(0, 17)}...
+          <Link href={p.image ?? ""} target="_blank" className="truncate text-main">
+            {p.image?.slice(0, 17)}...
           </Link>
         </td>
-        <td className="w-36 border p-3 text-left">{formatToIDR(p.price)}</td>
+        <td className="w-36 border p-3 text-left">{formatToIDR(p.price_sale)}</td>
         <td className="w-24 border p-3 text-center">{p.quantity}</td>
-        <td className="w-40 border p-3 text-left">{formatToIDR(p.totalPrice)}</td>
+        <td className="w-40 border p-3 text-left">{formatToIDR(p.total_price)}</td>
         <td className="border p-3 text-left tracking-wide">{formattedDate}</td>
       </tr>
     )

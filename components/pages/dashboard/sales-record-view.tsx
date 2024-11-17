@@ -59,7 +59,7 @@ export const SalesRecordView: React.FC<TokenProps> = ({ token }) => {
   const { products } = useSelector((state: RootState) => state.products)
   const totalProducts = products.length
   const totalPrice = products.reduce((acc, product) => {
-    return acc + product.price
+    return acc + product.price_sale
   }, 0)
   const disabledButton: boolean = totalProducts <= 0
 
@@ -181,19 +181,19 @@ const CardDrawer: React.FC<{ product: ProductSliceType }> = ({ product }) => {
       <DeleteButton id={product.id} />
       <div className="flex w-full items-start gap-2">
         <div className="aspect-square h-20 overflow-hidden rounded-xl">
-          <img alt="image" src={product.image} className="size-full object-cover" />
+          <img alt="image" src={product.image ?? ""} className="size-full object-cover" />
         </div>
         <div className="space-y-1">
           <h4 className="text-sm font-semibold capitalize">{product.title}</h4>
           <p className="flex items-center gap-2 text-xs font-medium">
-            {formatToIDR(product.unitPrice)}
+            {formatToIDR(product.unit_price)}
             <span className="text-xs text-main">x {product.quantity}</span>
           </p>
           <p className="text-xs">
             stock: {product.stock} {product.unit}
           </p>
           {/* <DiscountProduct id={product.id} price={product.price} /> */}
-          <p className="text-xs font-medium">Total Harga: {formatToIDR(product.price)}</p>
+          <p className="text-xs font-medium">Total Harga: {formatToIDR(product.price_sale)}</p>
         </div>
       </div>
       <div className="flex h-full flex-col justify-between gap-2">
@@ -333,6 +333,7 @@ const AddProductToRecord: React.FC<AddProductToRecordProps> = ({
   } = useMutation({
     mutationFn: async (data: CreateSalesRecordRequest[]) => {
       await axios.post(`/api/sales-records`, data, {
+        // tambah catatan
         headers: {
           Authorization: `Bearer ${token}`,
           userId: userId!,
@@ -379,14 +380,17 @@ const AddProductToRecord: React.FC<AddProductToRecordProps> = ({
   const handleAddSalesRecord = () => {
     try {
       const records: CreateSalesRecordRequest[] = products.map((product) => ({
-        userId: product.userId,
+        user_id: product.user_id,
         title: product.title,
-        image: product.image,
+        image: product.image ?? "",
         category: product.category,
-        price: product.unitPrice,
-        totalPrice: product.price,
+        price_purchase: product.price_purchase,
+        price_sale: product.unit_price,
+        total_price: product.price_sale,
+        transaction_type: "SALE",
         quantity: product.quantity,
         sku: product.sku ?? "",
+        product_id: product.id,
       }))
 
       createRecords(records)

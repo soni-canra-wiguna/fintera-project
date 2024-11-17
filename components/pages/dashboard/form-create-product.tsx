@@ -24,11 +24,12 @@ export const FormCreateProduct: React.FC<FormCreateProductProps> = ({ userId, to
   const form = useForm<InferProductSchemaType>({
     resolver: zodResolver(ProductSchema.CREATE),
     defaultValues: {
-      userId: userId!,
+      user_id: userId!,
       title: "",
       description: "",
       image: "",
-      price: 0,
+      price_purchase: 0,
+      price_sale: 0,
       category: "",
       stock: 0,
       unit: "PCS",
@@ -51,11 +52,12 @@ export const FormCreateProduct: React.FC<FormCreateProductProps> = ({ userId, to
     },
     onSuccess: () => {
       form.reset({
-        userId: userId!,
+        user_id: userId!,
         title: "",
         description: "",
         image: "",
-        price: 0,
+        price_purchase: 0,
+        price_sale: 0,
         category: "",
         stock: 0,
         unit: "PCS",
@@ -83,17 +85,18 @@ export const FormCreateProduct: React.FC<FormCreateProductProps> = ({ userId, to
 
   const previewProduct = {
     id: uuidv4(),
-    userId: userId!,
-    title: form.watch("title"),
-    image: form.watch("image"),
+    user_id: userId,
+    title: form.watch("title") ?? "",
+    image: form.watch("image") ?? "",
     description: form.watch("description") ?? "",
     sku: form.watch("sku") ?? "",
-    price: form.watch("price"),
-    category: form.watch("category"),
+    price_purchase: form.watch("price_purchase") ?? 0,
+    price_sale: form.watch("price_sale") ?? 0,
+    category: form.watch("category") ?? "PCS",
     stock: form.watch("stock"),
     unit: form.watch("unit")!,
-    createdAt: new Date(),
-    updatedAt: new Date(),
+    created_at: new Date(),
+    updated_at: new Date(),
   }
 
   return (
