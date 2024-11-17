@@ -1,8 +1,10 @@
-import { SearchByType } from "@/app/api/products/search/route"
-import { WithTokenAndUserId } from "@/types"
-import { InferProductSchemaType, ProductResponse, SearchResponse } from "@/types/product"
-import { Product } from "@prisma/client"
 import axios from "axios"
+import { Product } from "@prisma/client"
+
+import { SearchByType } from "@/app/api/products/search/route"
+import { ProductSliceType } from "@/redux/features/product/product-slice"
+import { DataProps, TokenProps, WithTokenAndUserId } from "@/types"
+import { InferProductSchemaType, ProductResponse, SearchResponse } from "@/types/product"
 
 interface ListsProductsServicesProps extends WithTokenAndUserId {
   pageParam: number
@@ -14,9 +16,10 @@ interface searchServicesProps extends WithTokenAndUserId {
   searchBy: SearchByType
 }
 
-interface CreateProductServicesProps {
-  token: string
-  data: InferProductSchemaType
+interface CreateProductServicesProps extends TokenProps, DataProps<InferProductSchemaType> {}
+
+interface UpdateStockProps extends WithTokenAndUserId {
+  products: ProductSliceType[]
 }
 
 export class ProductServices {
@@ -63,5 +66,24 @@ export class ProductServices {
         Authorization: `Bearer ${token}`,
       },
     })
+  }
+
+  static async updateStock({ token, userId, products }: UpdateStockProps) {
+    await Promise.all(
+      products.map((product) =>
+        axios.patch(
+          `/api/products/${product.id}`,
+          {
+            stock: product.stock - product.quantity,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              userId: userId,
+            },
+          },
+        ),
+      ),
+    )
   }
 }

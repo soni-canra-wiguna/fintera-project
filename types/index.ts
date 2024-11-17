@@ -23,3 +23,7 @@ export interface WithTokenAndUserId extends TokenProps {
 export interface ParamsAPI {
   params: { id: string }
 }
+
+export interface DataProps<T> {
+  data: T
+}

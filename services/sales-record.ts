@@ -1,6 +1,10 @@
 import axios from "axios"
-import { WithTokenAndUserId } from "@/types"
-import { SalesRecordsPaginationResponse, SalesRecordsResponse } from "@/types/sales-record"
+import { DataProps, WithTokenAndUserId } from "@/types"
+import {
+  CreateSalesRecordRequest,
+  SalesRecordsPaginationResponse,
+  SalesRecordsResponse,
+} from "@/types/sales-record"
 
 interface salesRecordsServicesProps extends WithTokenAndUserId {
   from: string
@@ -12,6 +16,8 @@ interface SalesRecordsPaginationServicesProps extends WithTokenAndUserId {
   page: number
   limit: string
 }
+
+interface CreateSalesRecords extends WithTokenAndUserId, DataProps<CreateSalesRecordRequest[]> {}
 
 export class SalesRecordServices {
   static async salesRecords({
@@ -49,5 +55,14 @@ export class SalesRecordServices {
       },
     )
     return data
+  }
+
+  static async createSalesRecords({ token, userId, data }: CreateSalesRecords) {
+    await axios.post(`/api/sales-records`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        userId: userId!,
+      },
+    })
   }
 }

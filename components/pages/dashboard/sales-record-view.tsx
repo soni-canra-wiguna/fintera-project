@@ -32,12 +32,12 @@ import { useMounted } from "@/hook/use-mounted"
 import { toast } from "@/components/ui/use-toast"
 import { LoadingButton } from "@/components/loading-button"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import axios from "axios"
 import { useAuth } from "@clerk/nextjs"
 import { CreateSalesRecordRequest } from "@/types/sales-record"
 import { DeleteModal } from "@/components/delete-modal"
 import { TokenProps } from "@/types"
 import { DiscountProduct } from "./discount-product"
+import { ProductServices, SalesRecordServices } from "@/services"
 
 interface LayoutSwitcherProps {
   disabledButton: boolean
@@ -332,32 +332,12 @@ const AddProductToRecord: React.FC<AddProductToRecordProps> = ({
     isError,
   } = useMutation({
     mutationFn: async (data: CreateSalesRecordRequest[]) => {
-      await axios.post(`/api/sales-records`, data, {
-        // tambah catatan
-        headers: {
-          Authorization: `Bearer ${token}`,
-          userId: userId!,
-        },
-      })
+      await SalesRecordServices.createSalesRecords({ token, userId: userId!, data })
     },
     onSuccess: async () => {
       // update stock product based on current stock - qunatity
-      await Promise.all(
-        products.map((product) =>
-          axios.patch(
-            `/api/products/${product.id}`,
-            {
-              stock: product.stock - product.quantity,
-            },
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-                userId: userId,
-              },
-            },
-          ),
-        ),
-      )
+      await ProductServices.updateStock({ token, userId: userId!, products })
+
       queryClient.invalidateQueries({ queryKey: ["lists_products"] })
       queryClient.invalidateQueries({ queryKey: ["pagging_salesrecord"] })
       queryClient.invalidateQueries({ queryKey: ["sales_records"] })
