@@ -27,7 +27,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
       image: response.image!,
       category: response.category,
       price_purchase: response.price_purchase,
-      price_sale: response.price_sale,
+      price_sale: 0, // !the selling price should be empty, if 0 is afraid someone will assume the price is free.
       quantity: response.stock,
       total_price: response.stock * response.price_purchase,
       transaction_type: "EXPENSE",
