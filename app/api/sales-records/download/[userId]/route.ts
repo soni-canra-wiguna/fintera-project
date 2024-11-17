@@ -33,11 +33,9 @@ export const GET = async (req: NextRequest, { params }: { params: { userId: stri
       { header: "Harga Beli", key: "price_purchase" },
       { header: "Harga Jual", key: "price_sale" },
       { header: "QTY", key: "quantity" },
-      { header: "Harga Jual", key: "total_price" },
+      { header: "Total Harga", key: "total_price" },
       { header: "Tipe Transaksi", key: "transaction_type" },
-      { header: "Produt Id", key: "product_id" },
-      { header: "User Id", key: "user_id" },
-      { header: "Tanggal Pembelian", key: "created_at" },
+      { header: "Tanggal Transaksi", key: "created_at" },
     ]
 
     salesRecord.forEach(
@@ -52,8 +50,6 @@ export const GET = async (req: NextRequest, { params }: { params: { userId: stri
           quantity,
           total_price,
           transaction_type,
-          product_id,
-          user_id,
           created_at,
         },
         index,
@@ -68,9 +64,7 @@ export const GET = async (req: NextRequest, { params }: { params: { userId: stri
           price_sale,
           quantity,
           total_price,
-          transaction_type,
-          product_id,
-          user_id,
+          transaction_type: transaction_type === "SALE" ? "Pemasukan" : "Pengeluaran",
           created_at: format(created_at, "dd-MM-yyyy"),
         })
       },
