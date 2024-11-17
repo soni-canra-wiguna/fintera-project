@@ -40,7 +40,10 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
   } catch (error) {
     console.log("[ERROR POST PRODUCTS] : ", error)
     if (error instanceof z.ZodError) {
-      return errorResponse({ message: "Validation error", errors: error.errors }, 500)
+      return NextResponse.json(
+        { message: "Validation error", errors: error.errors },
+        { status: 400 },
+      )
     }
     return errorResponse("Internal server error", 500)
   }
@@ -57,7 +60,7 @@ export const GET = async (req: NextRequest, res: NextResponse): Promise<any> => 
     const { products, totalProducts } = await ProductServicesAPI.get(userId, orderBy, skip, limit)
 
     if (!totalProducts || products.length === 0) {
-      return errorResponse({ message: "data not found", data: [] }, 200)
+      return NextResponse.json({ message: "data not found", data: [] }, { status: 200 })
     }
 
     const response = {

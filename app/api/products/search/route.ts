@@ -53,7 +53,7 @@ export const GET = async (req: NextRequest) => {
     const products = await ProductServicesAPI.search(userId, filters)
 
     if (query && products.length === 0) {
-      return errorResponse({ message: "search results not found", data: [] }, 200)
+      return NextResponse.json({ message: "search results not found", data: [] }, { status: 200 })
     }
 
     return NextResponse.json(

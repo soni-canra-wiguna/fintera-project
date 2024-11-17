@@ -26,7 +26,10 @@ export const PUT = async (req: NextRequest, { params }: ParamsAPI) => {
   } catch (error) {
     console.log("[ERROR PUT PRODUCTS] : ", error)
     if (error instanceof z.ZodError) {
-      return errorResponse({ message: "Validation error", errors: error.errors }, 400)
+      return NextResponse.json(
+        { message: "Validation error", errors: error.errors },
+        { status: 400 },
+      )
     }
     return errorResponse("Internal server error", 500)
   }
@@ -50,7 +53,10 @@ export const PATCH = async (req: NextRequest, { params }: ParamsAPI) => {
   } catch (error) {
     console.log("[ERROR PATCH PRODUCTS] : ", error)
     if (error instanceof z.ZodError) {
-      return errorResponse({ message: "Validation error", errors: error.errors }, 400)
+      return NextResponse.json(
+        { message: "Validation error", errors: error.errors },
+        { status: 400 },
+      )
     }
     return errorResponse("Internal server error", 500)
   }

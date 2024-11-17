@@ -27,7 +27,10 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
   } catch (error) {
     console.log("[ERROR POST SALES RECORDS] : ", error)
     if (error instanceof z.ZodError) {
-      return errorResponse({ message: "Validation error", errors: error.errors }, 400)
+      return NextResponse.json(
+        { message: "Validation error", errors: error.errors },
+        { status: 400 },
+      )
     }
     return errorResponse("Internal server error", 500)
   }
@@ -88,7 +91,7 @@ export const GET = async (req: NextRequest, res: NextResponse): Promise<any> => 
     )
 
     if (!totalSalesRecords || salesRecords.length === 0) {
-      return errorResponse({ message: "data not found", data: [] }, 200)
+      return NextResponse.json({ message: "data not found", data: [] }, { status: 200 })
     }
 
     // statistic response start
@@ -228,7 +231,7 @@ export const DELETE = async (req: NextRequest, res: NextResponse) => {
 
     await SalesRecordServicesAPI.deleteAll(userId)
 
-    return NextResponse.json("successfully deleted", { status: 200 })
+    return NextResponse.json({ message: "successfully deleted" }, { status: 200 })
   } catch (error) {
     console.log("[ERROR DELETE SALES RECORDS] : ", error)
     return errorResponse("Internal server error", 500)

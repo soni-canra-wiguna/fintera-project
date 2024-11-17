@@ -23,7 +23,7 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
     )
 
     if (!totalSalesRecords || salesRecords.length === 0) {
-      return errorResponse({ message: "data not found", data: [] }, 200)
+      return NextResponse.json({ message: "data not found", data: [] }, { status: 200 })
     }
 
     const response = {
