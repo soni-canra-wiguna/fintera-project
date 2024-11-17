@@ -29,8 +29,8 @@ enum Unit {
 }
 
 enum TransactionType {
-  SALE // Penjualan
-  EXPENSE // Pengeluaran
+  SALE
+  EXPENSE
 }
 
 model Product {
@@ -38,8 +38,8 @@ model Product {
   title          String        @db.VarChar(255)
   description    String?
   image          String?
-  price_purchase Int // Harga pembelian per unit
-  price_sale     Int // Harga penjualan per unit
+  price_purchase Int
+  price_sale     Int
   category       String        @db.VarChar(50)
   stock          Int
   sku            String?       @db.VarChar(50)
@@ -63,7 +63,7 @@ model SalesRecord {
   quantity         Int
   price_purchase   Int
   price_sale       Int
-  total_price      Int // price_sale * quantity
+  total_price      Int
   transaction_type TransactionType
   user_id          String
   user             User            @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: Cascade)
