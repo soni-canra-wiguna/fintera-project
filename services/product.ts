@@ -1,6 +1,6 @@
 import { SearchByType } from "@/app/api/products/search/route"
 import { WithTokenAndUserId } from "@/types"
-import { ProductResponse, SearchResponse } from "@/types/product"
+import { InferProductSchemaType, ProductResponse, SearchResponse } from "@/types/product"
 import { Product } from "@prisma/client"
 import axios from "axios"
 
@@ -12,6 +12,11 @@ interface ListsProductsServicesProps extends WithTokenAndUserId {
 interface searchServicesProps extends WithTokenAndUserId {
   query: string
   searchBy: SearchByType
+}
+
+interface CreateProductServicesProps {
+  token: string
+  data: InferProductSchemaType
 }
 
 export class ProductServices {
@@ -49,5 +54,14 @@ export class ProductServices {
       },
     )
     return data.data
+  }
+
+  static async createProduct({ token, data }: CreateProductServicesProps) {
+    await axios.post("/api/products", data, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
   }
 }

@@ -5,13 +5,13 @@ import { InferProductSchemaType } from "@/types/product"
 import React from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import axios from "axios"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useRouter } from "next/navigation"
 import { toast } from "@/components/ui/use-toast"
 import { v4 as uuidv4 } from "uuid"
 import { ProductForm } from "./product-form"
 import { TokenProps } from "@/types"
+import { ProductServices } from "@/services"
 
 interface FormCreateProductProps extends TokenProps {
   userId: string
@@ -43,12 +43,7 @@ export const FormCreateProduct: React.FC<FormCreateProductProps> = ({ userId, to
     isError,
   } = useMutation({
     mutationFn: async (data: InferProductSchemaType) => {
-      await axios.post("/api/products", data, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      })
+      await ProductServices.createProduct({ token, data })
     },
     onSuccess: () => {
       form.reset({
