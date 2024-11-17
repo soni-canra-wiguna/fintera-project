@@ -95,17 +95,16 @@ export const PreviewDetailProduct: React.FC<PreviewDetailProductProps> = ({
             <WrapperDetailProduct title="harga jual">
               <p className="">{formatToIDR(product.price_sale)}</p>
             </WrapperDetailProduct>
-
-            <WrapperDetailProduct className="bg-secondary" title="kategori">
+            <WrapperDetailProduct className="bg-secondary" title="stock">
+              <p className="">{`${product.stock} ${product.unit}`}</p>
+            </WrapperDetailProduct>
+            <WrapperDetailProduct title="kategori">
               <Badge variant="secondary" className="capitalize">
                 {product.category}
               </Badge>
             </WrapperDetailProduct>
-            <WrapperDetailProduct title="sku">
+            <WrapperDetailProduct className="bg-secondary" title="sku">
               <p>{product.sku}</p>
-            </WrapperDetailProduct>
-            <WrapperDetailProduct className="bg-secondary" title="stock">
-              <p className="">{`${product.stock} ${product.unit}`}</p>
             </WrapperDetailProduct>
             <WrapperDetailProduct title="deskripsi">
               <WithTypographyStyle>{parse(product.description!)}</WithTypographyStyle>
