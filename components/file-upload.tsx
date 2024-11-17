@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation"
 
 interface FileUploadProps {
   onChange: (url?: string) => void
-  value: string
+  value?: string
   endpoint: "product"
 }
 
