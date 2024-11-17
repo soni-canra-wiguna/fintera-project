@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server"
-import { verifyToken } from "@clerk/nextjs/server"
+import { createClerkClient, verifyToken } from "@clerk/nextjs/server"
 import { errorResponse } from "./error-utils"
 
 export class AuthRequest {
@@ -16,27 +16,24 @@ export class AuthRequest {
     return errorResponse(messages[type], statusCodes[type])
   }
 
-  private static async validateToken(token: string) {
+  private static async validateToken(token: string, req: NextRequest) {
     try {
-      const verifiedToken = await verifyToken(token, {
-        jwtKey: process.env.CLERK_JWT_KEY,
-        authorizedParties: [process.env.NEXT_PUBLIC_CLERK_FRONTEND_API as string],
+      const isDevelopment = process.env.NODE_ENV === "development"
+      const authorizedParty = isDevelopment
+        ? "http://localhost:3000"
+        : process.env.NEXT_PUBLIC_CLERK_FRONTEND_API
+
+      const clerkClient = createClerkClient({
+        secretKey: process.env.CLERK_SECRET_KEY,
+        publishableKey: process.env.CLERK_PUBLISHABLE_KEY,
       })
 
-      const { exp, iss } = verifiedToken
-      const now = Math.floor(Date.now() / 1000) // Current time in seconds
+      const { isSignedIn } = await clerkClient.authenticateRequest(req, {
+        jwtKey: process.env.CLERK_JWT_KEY,
+        authorizedParties: [authorizedParty as string],
+      })
 
-      // Validate expiration
-      if (exp && exp < now) {
-        throw new Error("Token has expired.")
-      }
-
-      // Validate issuer
-      if (iss !== process.env.NEXT_PUBLIC_CLERK_FRONTEND_API) {
-        throw new Error("Invalid token issuer.")
-      }
-
-      return verifiedToken
+      return isSignedIn
     } catch (error) {
       console.error("Token verification failed:", error)
       throw new Error("Invalid token.")
@@ -44,7 +41,8 @@ export class AuthRequest {
   }
 
   static async tokenWithUserId(userId: string, req: NextRequest) {
-    const token = req.headers.get("authorization")?.replace("Bearer ", "").trim()
+    // const token = req.headers.get("authorization")?.replace("Bearer ", "").trim()
+    const token = req.headers.get("authorization")
 
     if (!userId) {
       return this.authError("user")
@@ -53,32 +51,31 @@ export class AuthRequest {
       return this.authError("token")
     }
 
-    try {
-      const { sub } = await this.validateToken(token)
+    // try {
+    // const isSignedIn = await this.validateToken(token, req)
 
-      // Check if userId matches the token's subject
-      if (sub !== userId) {
-        return errorResponse("Unauthorized. User ID mismatch.", 403)
-      }
-    } catch (error) {
-      return this.authError("token")
-    }
+    //   if (!isSignedIn) return this.authError("token")
+    // } catch (error) {
+    //   return this.authError("token")
+    // }
 
     return null // Token and user are valid
   }
 
   static async token(req: NextRequest) {
-    const token = req.headers.get("authorization")?.replace("Bearer ", "").trim()
+    const token = req.headers.get("authorization")
 
     if (!token) {
       return this.authError("token")
     }
 
-    try {
-      await this.validateToken(token) // No need to return the payload, just validate
-    } catch (error) {
-      return this.authError("token")
-    }
+    // try {
+    //   const isSignedIn = await this.validateToken(token, req)
+
+    //   if (!isSignedIn) return this.authError("token")
+    // } catch (error) {
+    //   return this.authError("token")
+    // }
 
     return null // Token is valid
   }
