@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation"
 import { useClerk } from "@clerk/nextjs"
 import { DeleteModal } from "@/components/delete-modal"
 import { TokenProps } from "@/types"
+import { sendGTMEvent } from "@next/third-parties/google"
 
 export interface DeleteAccountProps extends TokenProps {
   userId: string
@@ -37,6 +38,7 @@ export const DeteleAccount: React.FC<DeleteAccountProps> = ({ userId, token }) =
       await signOut()
     },
     onSuccess: () => {
+      sendGTMEvent({ event: "delete_account", user_id: userId! })
       toast({
         description: "akun telah di hapus",
       })

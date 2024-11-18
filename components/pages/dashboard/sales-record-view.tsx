@@ -38,6 +38,7 @@ import { DeleteModal } from "@/components/delete-modal"
 import { TokenProps } from "@/types"
 import { DiscountProduct } from "./discount-product"
 import { ProductServices, SalesRecordServices } from "@/services"
+import { sendGTMEvent } from "@next/third-parties/google"
 
 interface LayoutSwitcherProps {
   disabledButton: boolean
@@ -340,6 +341,8 @@ const AddProductToRecord: React.FC<AddProductToRecordProps> = ({
     onSuccess: async () => {
       // update stock product based on current stock - qunatity
       await ProductServices.updateStock({ token, userId: userId!, products })
+
+      sendGTMEvent({ event: "add_product_to_sales_records", user_id: userId! })
 
       queryClient.invalidateQueries({ queryKey: ["lists_products"] })
       queryClient.invalidateQueries({ queryKey: ["pagging_salesrecord"] })

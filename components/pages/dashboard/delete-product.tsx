@@ -6,6 +6,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import axios from "axios"
 import { toast } from "@/components/ui/use-toast"
 import { DeleteModal } from "@/components/delete-modal"
+import { sendGTMEvent } from "@next/third-parties/google"
 
 interface DeleteProductProps {
   setIsOpen: (isOpen: boolean) => void
@@ -39,11 +40,16 @@ export const DeleteProduct: React.FC<DeleteProductProps> = ({
       })
     },
     onSuccess: () => {
+      sendGTMEvent({
+        event: "delete_product",
+        product_id: id,
+        user_id: userId,
+      })
+
       queryClient.invalidateQueries({ queryKey: ["lists_products"] })
       queryClient.invalidateQueries({ queryKey: ["search_input"] })
       toast({
         description: "produk telah di hapus",
-        // variant: "destructive",
       })
       setIsOpenDialog(!isOpenDialog)
       setIsOpen(false)

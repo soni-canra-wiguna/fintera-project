@@ -12,6 +12,7 @@ import { v4 as uuidv4 } from "uuid"
 import { ProductForm } from "./product-form"
 import { TokenProps } from "@/types"
 import { ProductServices } from "@/services"
+import { sendGTMEvent } from "@next/third-parties/google"
 
 interface FormCreateProductProps extends TokenProps {
   userId: string
@@ -46,6 +47,8 @@ export const FormCreateProduct: React.FC<FormCreateProductProps> = ({ userId, to
       await ProductServices.create({ userId: userId!, token, data })
     },
     onSuccess: () => {
+      sendGTMEvent({ event: "create_product", user_id: userId! })
+
       form.reset({
         user_id: userId!,
         title: "",

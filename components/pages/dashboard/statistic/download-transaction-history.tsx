@@ -13,6 +13,7 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer"
 import { useAuth } from "@clerk/nextjs"
+import { sendGTMEvent } from "@next/third-parties/google"
 import axios from "axios"
 import { Download, FileDown, X } from "lucide-react"
 
@@ -58,6 +59,8 @@ export const DownloadTransactionHistory = () => {
       document.body.appendChild(a)
       a.click()
       document.body.removeChild(a)
+
+      sendGTMEvent({ event: "download_sales_records", file_type: type, user_id: userId! })
     } catch (error) {
       console.log("[ERROR DOWNLOADING FILE]: ", error)
     }

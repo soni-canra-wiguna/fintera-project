@@ -29,6 +29,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { ProductServices } from "@/services"
+import { sendGTMEvent } from "@next/third-parties/google"
 
 interface FilterSeachProductProps {
   searchBy: SearchByType
@@ -95,7 +96,10 @@ export const SearchBar: React.FC<TokenProps> = ({ token }) => {
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>
-        <div className="relative flex h-8 w-full cursor-text rounded-lg bg-secondary selection:bg-transparent">
+        <div
+          onClick={() => sendGTMEvent({ event: "search_click", user_id: userId! })}
+          className="relative flex h-8 w-full cursor-text rounded-lg bg-secondary selection:bg-transparent"
+        >
           <span className="absolute left-2.5 top-1/2 flex -translate-y-1/2 items-center gap-2 text-sm capitalize text-muted-foreground">
             <SearchIcon className="size-4 text-inherit" />
             cari produk
