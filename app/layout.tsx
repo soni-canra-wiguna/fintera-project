@@ -16,24 +16,21 @@ import { Analytics } from "@/components/analytics"
 
 export const metadata: Metadata = {
   title: {
-    default: "Notacore",
-    template: "%s | Notacore - Aplikasi Catatan Penjualan",
+    default: "Fintera",
+    template: "%s | Fintera - Solusi Tepat untuk Catatan Keuangan.",
   },
   description:
-    "Notacore adalah aplikasi catatan penjualan yang membantu bisnis mencatat dan mengelola transaksi dengan mudah dan cepat.",
+    "Fintera adalah aplikasi catatan penjualan dan pengelola keuangan yang membantu bisnis mencatat dan mengelola transaksi dengan mudah dan cepat.",
   referrer: "origin-when-cross-origin",
-  applicationName: "Notacore",
+  applicationName: "Fintera",
   icons: {
-    icon: "/notacore.png",
-    apple: "/notacore.png", // Ikon untuk dukungan iOS
+    icon: "fr-icon.png",
+    apple: "fr-icon.png", // Ikon untuk dukungan iOS
   },
-  // verification: {
-  //   google: process.env.GOOGLE_SITE_VERIFICATION,
-  // },
   keywords: [
     "catatan penjualan",
     "aplikasi bisnis",
-    "notacore",
+    "Fintera",
     "pencatatan transaksi",
     "pengelolaan penjualan",
     "invoice online",
@@ -45,17 +42,17 @@ export const metadata: Metadata = {
     "solusi bisnis",
     "laporan penjualan",
   ],
-  authors: [{ name: "Soni Canra Wiguna", url: "https://instagram.com/sonicanra" }],
+  authors: [{ name: "Soni Canra Wiguna", url: "https://instagram.com/canra_514" }],
   creator: "Soni Canra Wiguna",
   publisher: "Soni Canra Wiguna",
-  generator: "Next.Js 14.2",
+  generator: "Next.Js 14.2.15",
   robots: {
     index: true,
     follow: true,
     nocache: true,
     googleBot: {
       index: true,
-      follow: true, // Mengizinkan Googlebot mengikuti tautan
+      follow: true,
       noimageindex: false, // Membolehkan pengindeksan gambar
       "max-video-preview": -1,
       "max-image-preview": "large",
@@ -65,41 +62,37 @@ export const metadata: Metadata = {
   metadataBase: new URL(process.env.PRODUCTION_URL as string),
   alternates: {
     canonical: process.env.PRODUCTION_URL,
-    // languages: {
-    //   "id-ID": "https://notacore.vercel.app/id",
-    //   "en-US": "https://notacore.vercel.app/en",
-    // },
   },
   openGraph: {
     title: {
-      default: "Notacore - Aplikasi Catatan Penjualan",
-      template: "%s | Notacore",
+      default: "Fintera - Solusi Tepat untuk Catatan Keuangan.",
+      template: "%s | Fintera",
     },
     description:
-      "Kelola dan catat transaksi penjualan bisnis Anda dengan Notacore. Mudah digunakan, cepat, dan efisien.",
+      "Kelola dan catat transaksi penjualan bisnis Anda dengan Fintera. Mudah digunakan, cepat, dan efisien.",
     url: process.env.PRODUCTION_URL,
     images: [
       {
-        url: "https://utfs.io/f/5e90efc6-f787-4db9-84b0-56a6ee939e02-jn3obm.png",
+        url: "https://utfs.io/f/qmMCwF8GSxijEmlMXz77a4pzVbwW2gO5YNUs83iIMBql60XR",
         width: 1200,
         height: 630,
-        alt: "Notacore - Aplikasi Catatan Penjualan", // Teks alternatif untuk aksesibilitas
+        alt: "Fintera - Solusi Tepat untuk Catatan Keuangan.", // Teks alternatif untuk aksesibilitas
       },
     ],
     type: "website",
     locale: "id_ID",
-    siteName: "Notacore",
+    siteName: "Fintera",
   },
   twitter: {
     card: "summary_large_image", // Kartu Twitter untuk visibilitas lebih baik di media sosial
-    site: "@NotacoreApp",
-    creator: "@SoniCanra",
-    title: "Notacore - Solusi Catatan Penjualan Bisnis",
-    description: "Notacore membantu bisnis mencatat dan melacak penjualan dengan efisien.",
+    site: "https://fintera.vercel.app",
+    creator: "@SoniCanraWiguna",
+    title: "Fintera - Solusi Catatan Penjualan Bisnis",
+    description: "Fintera membantu bisnis mencatat dan melacak penjualan dengan efisien.",
     images: [
       {
-        url: "https://utfs.io/f/5e90efc6-f787-4db9-84b0-56a6ee939e02-jn3obm.png",
-        alt: "Notacore Banner",
+        url: "https://utfs.io/f/qmMCwF8GSxijEmlMXz77a4pzVbwW2gO5YNUs83iIMBql60XR",
+        alt: "Fintera Banner",
       },
     ],
   },
