@@ -8,6 +8,7 @@ import { AuthRequest } from "@/lib/auth-request"
 import { ProductServicesAPI } from "@/utils/api/product"
 import { getQueryParams } from "@/utils/get-query-params"
 import { SalesRecordServicesAPI } from "@/utils/api/sales-record"
+import { limitRequestAPI } from "@/lib/rate-limit"
 
 export const POST = async (req: NextRequest, res: NextResponse) => {
   try {
@@ -15,6 +16,9 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
 
     const authError = await AuthRequest.tokenWithUserId(userId, req)
     if (authError) return authError
+
+    const limitError = await limitRequestAPI({ userId })
+    if (limitError) return limitError
 
     const request: CreateProductRequest = await req.json()
     const response = Validation.validate(ProductSchema.CREATE, request)
@@ -54,6 +58,9 @@ export const GET = async (req: NextRequest, res: NextResponse): Promise<any> => 
     const userId = req.headers.get("userId") ?? ""
     const authError = await AuthRequest.tokenWithUserId(userId, req)
     if (authError) return authError
+
+    const limitError = await limitRequestAPI({ userId })
+    if (limitError) return limitError
 
     const { page, limit, skip, orderBy } = getQueryParams(req)
 

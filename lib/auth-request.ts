@@ -80,7 +80,7 @@ export class AuthRequest {
     return null // Token is valid
   }
 
-  static userId(userId: string) {
+  static async userId(userId: string) {
     if (!userId) {
       return this.authError("user")
     }

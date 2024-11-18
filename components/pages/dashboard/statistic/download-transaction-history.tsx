@@ -44,6 +44,9 @@ export const DownloadTransactionHistory = () => {
     try {
       const { data } = await axios.get(`/api/sales-records/download/${userId}?fileType=${type}`, {
         responseType: "blob",
+        headers: {
+          userId: userId,
+        },
       })
 
       const blob = new Blob([data], {

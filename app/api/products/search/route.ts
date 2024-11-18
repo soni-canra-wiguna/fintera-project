@@ -4,6 +4,7 @@ import { AuthRequest } from "@/lib/auth-request"
 import { getQueryParams } from "@/utils/get-query-params"
 import { errorResponse } from "@/lib/error-utils"
 import { ProductServicesAPI } from "@/utils/api/product"
+import { limitRequestAPI } from "@/lib/rate-limit"
 
 export const dynamic = "force-dynamic"
 
@@ -46,6 +47,9 @@ export const GET = async (req: NextRequest) => {
 
     const authError = await AuthRequest.tokenWithUserId(userId, req)
     if (authError) return authError
+
+    const limitError = await limitRequestAPI({ userId })
+    if (limitError) return limitError
 
     const { query, searchBy } = getQueryParams(req)
     const filters = searchFilter(query, searchBy)

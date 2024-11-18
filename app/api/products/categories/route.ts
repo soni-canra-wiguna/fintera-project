@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { errorResponse } from "@/lib/error-utils"
 import { AuthRequest } from "@/lib/auth-request"
 import { ProductServicesAPI } from "@/utils/api/product"
+import { limitRequestAPI } from "@/lib/rate-limit"
 
 export const dynamic = "force-dynamic"
 
@@ -11,6 +12,9 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
 
     const authError = await AuthRequest.tokenWithUserId(userId, req)
     if (authError) return authError
+
+    const limitError = await limitRequestAPI({ limitRequest: 20, userId })
+    if (limitError) return limitError
 
     const categories = await ProductServicesAPI.getCategories(userId)
 

@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
 import { z } from "zod"
-import prisma from "@/lib/prisma"
 import { ProductSchema } from "@/schema"
 import { Validation } from "@/schema/validation"
 import { CreateProductRequest } from "@/types/product"
@@ -8,6 +7,7 @@ import { errorResponse } from "@/lib/error-utils"
 import { AuthRequest } from "@/lib/auth-request"
 import { ProductServicesAPI } from "@/utils/api/product"
 import { ParamsAPI } from "@/types"
+import { limitRequestAPI } from "@/lib/rate-limit"
 
 export const PUT = async (req: NextRequest, { params }: ParamsAPI) => {
   try {
@@ -16,6 +16,9 @@ export const PUT = async (req: NextRequest, { params }: ParamsAPI) => {
 
     const authError = await AuthRequest.tokenWithUserId(userId, req)
     if (authError) return authError
+
+    const limitError = await limitRequestAPI({ userId })
+    if (limitError) return limitError
 
     const request: CreateProductRequest = await req.json()
     const response = Validation.validate(ProductSchema.CREATE, request)
@@ -44,6 +47,9 @@ export const PATCH = async (req: NextRequest, { params }: ParamsAPI) => {
     const authError = await AuthRequest.tokenWithUserId(userId, req)
     if (authError) return authError
 
+    const limitError = await limitRequestAPI({ userId })
+    if (limitError) return limitError
+
     const request: CreateProductRequest = await req.json()
     const response = Validation.validate(ProductSchema.UPDATE, request)
 
@@ -70,6 +76,9 @@ export const GET = async (req: NextRequest, { params }: ParamsAPI) => {
     const authError = await AuthRequest.tokenWithUserId(userId, req)
     if (authError) return authError
 
+    const limitError = await limitRequestAPI({ userId })
+    if (limitError) return limitError
+
     const product = await ProductServicesAPI.getSingle(id, userId)
 
     if (!product) return errorResponse("product not found", 404)
@@ -91,6 +100,9 @@ export const DELETE = async (req: NextRequest, { params }: ParamsAPI) => {
 
     const authError = await AuthRequest.tokenWithUserId(userId, req)
     if (authError) return authError
+
+    const limitError = await limitRequestAPI({ limitRequest: 30, userId })
+    if (limitError) return limitError
 
     await ProductServicesAPI.delete(id, userId)
 

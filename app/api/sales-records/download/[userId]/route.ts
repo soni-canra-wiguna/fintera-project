@@ -5,6 +5,8 @@ import ExcelJS from "exceljs"
 import { Buffer } from "buffer"
 import { errorResponse } from "@/lib/error-utils"
 import { SalesRecordServicesAPI } from "@/utils/api/sales-record"
+import { limitRequestAPI } from "@/lib/rate-limit"
+import { AuthRequest } from "@/lib/auth-request"
 
 export const dynamic = "force-dynamic"
 
@@ -13,9 +15,12 @@ export type FileType = "xlsx" | "csv"
 export const GET = async (req: NextRequest, { params }: { params: { userId: string } }) => {
   try {
     const { userId } = params
-    if (!userId) {
-      return NextResponse.json({ message: "Unauthorized. User not Found." }, { status: 404 })
-    }
+
+    const authError = await AuthRequest.userId(userId)
+    if (authError) return authError
+
+    const limitError = await limitRequestAPI({ limitRequest: 10, userId })
+    if (limitError) return limitError
 
     const fileType: "xlsx" | "csv" = (getSearchParams(req, "fileType") as FileType) ?? "csv"
 

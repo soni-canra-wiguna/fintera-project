@@ -1,5 +1,6 @@
 import { AuthRequest } from "@/lib/auth-request"
 import { errorResponse } from "@/lib/error-utils"
+import { limitRequestAPI } from "@/lib/rate-limit"
 import { SalesRecordSchema } from "@/schema"
 import { Validation } from "@/schema/validation"
 import { CreateSalesRecordRequest } from "@/types/sales-record"
@@ -11,8 +12,13 @@ import * as z from "zod"
 
 export const POST = async (req: NextRequest, res: NextResponse) => {
   try {
-    const authError = await AuthRequest.token(req)
+    const userId = req.headers.get("userId") ?? ""
+
+    const authError = await AuthRequest.tokenWithUserId(userId, req)
     if (authError) return authError
+
+    const limitError = await limitRequestAPI({ userId })
+    if (limitError) return limitError
 
     const request: CreateSalesRecordRequest[] = await req.json()
     const response = Validation.validate(SalesRecordSchema.ARRAY_CREATE, request)
@@ -42,6 +48,9 @@ export const GET = async (req: NextRequest, res: NextResponse): Promise<any> => 
     const authError = await AuthRequest.token(req)
 
     if (authError) return authError
+
+    const limitError = await limitRequestAPI({ userId })
+    if (limitError) return limitError
 
     const { from, to, category, orderBySalesRecord: orderBy } = getQueryParams(req)
 
@@ -226,8 +235,12 @@ export const GET = async (req: NextRequest, res: NextResponse): Promise<any> => 
 export const DELETE = async (req: NextRequest, res: NextResponse) => {
   try {
     const userId = req.headers.get("userId") ?? ""
+
     const authError = await AuthRequest.tokenWithUserId(userId, req)
     if (authError) return authError
+
+    const limitError = await limitRequestAPI({ limitRequest: 10, userId })
+    if (limitError) return limitError
 
     await SalesRecordServicesAPI.deleteAll(userId)
 

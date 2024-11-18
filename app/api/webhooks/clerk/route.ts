@@ -4,6 +4,7 @@ import { headers } from "next/headers"
 import { Webhook } from "svix"
 import { errorResponse } from "@/lib/error-utils"
 import { UserServicesAPI } from "@/utils/api/user"
+import { limitRequestAPI } from "@/lib/rate-limit"
 
 const webhookSecret = process.env.CLERK_WEBHOOK_SECRET || ``
 
@@ -39,17 +40,20 @@ export async function POST(req: NextRequest) {
       "apiVersion": "v1"
     } 
     */
-    const { id: user_id } = payload.data
-    if (!user_id) return NextResponse.json({ message: "No user ID provided" }, { status: 400 })
+    const { id: userId } = payload.data
+    if (!userId) return NextResponse.json({ message: "No user ID provided" }, { status: 400 })
+
+    const limitError = await limitRequestAPI({ limitRequest: 20, userId })
+    if (limitError) return limitError
 
     // Create or delete a user in the database based on the Clerk Webhook event
     switch (payload.type) {
       case "user.created": {
-        await UserServicesAPI.upsert(user_id)
+        await UserServicesAPI.upsert(userId)
         break
       }
       case "user.deleted": {
-        await UserServicesAPI.delete(user_id)
+        await UserServicesAPI.delete(userId)
         break
       }
       default:

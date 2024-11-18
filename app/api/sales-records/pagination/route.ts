@@ -3,15 +3,19 @@ import { getQueryParams } from "@/utils/get-query-params"
 import { AuthRequest } from "@/lib/auth-request"
 import { errorResponse } from "@/lib/error-utils"
 import { SalesRecordServicesAPI } from "@/utils/api/sales-record"
+import { limitRequestAPI } from "@/lib/rate-limit"
 
 export const dynamic = "force-dynamic"
 
 export const GET = async (req: NextRequest, res: NextResponse) => {
   try {
     const userId = req.headers.get("userId") ?? ""
-    const authError = await AuthRequest.token(req)
 
+    const authError = await AuthRequest.tokenWithUserId(userId, req)
     if (authError) return authError
+
+    const limitError = await limitRequestAPI({ userId })
+    if (limitError) return limitError
 
     const { page, limit, skip, orderBySalesRecord: orderBy } = getQueryParams(req)
 
