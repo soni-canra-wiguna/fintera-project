@@ -18,7 +18,7 @@ export interface ProductResponse {
 export interface SalesAndRevenueByCategoryResponse {
   label: string
   quantity: number
-  totalPrice: number
+  total_price: number
 }
 
 export interface StatisticResponse {

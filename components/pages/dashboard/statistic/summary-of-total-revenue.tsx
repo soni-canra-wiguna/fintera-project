@@ -175,7 +175,7 @@ export const SummaryOfTotalRevenueByCategory: React.FC<{
               </div>
               <div className="flex items-center justify-center">
                 <span className="text-lg font-bold leading-none">
-                  {formatToIDR(category.totalPrice)}
+                  {formatToIDR(category.total_price)}
                 </span>
               </div>
             </Card>
