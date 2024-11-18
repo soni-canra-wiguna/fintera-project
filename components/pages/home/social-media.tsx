@@ -1,11 +1,11 @@
-import { ThemeSwitcher } from '@/components/theme-switcher'
-import { Github } from 'lucide-react';
+import { ThemeSwitcher } from "@/components/theme-switcher"
+import { Github } from "lucide-react"
 
 export const SocialMedia = () => {
   return (
-    <div className="absolute right-8 top-8 flex items-center gap-6">
+    <div className="flex items-center gap-6 text-background dark:text-primary">
       <a className="" href="https://github.com/soni-canra-wiguna" target="_blank">
-        <Github className="size-6" />
+        <Github className="size-6 stroke-[1.5]" />
       </a>
       <ThemeSwitcher sizeIcon="6" className="w-max border-none p-0" />
     </div>
